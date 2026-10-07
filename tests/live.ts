@@ -78,7 +78,7 @@ function difference(
   return Math.sqrt(s / (last - first));
 }
 try {
-  const normal = await render("bell", "softness", 0.46);
+  const normal = await render("bell", "softness", melodyDefaults.softness);
   for (const [key, value] of [
     ["softness", 1],
     ["shimmer", 0],

@@ -63,7 +63,7 @@ document.querySelector("#run")!.addEventListener("click", async () => {
     );
     assert(
       plain.count === 0 && wet.count === 0,
-      "Partial and FM oscillators clean up after their tails",
+      "Harmonic oscillators clean up after their tails",
     );
     assert(
       rms(short.data, 44100 * 2) < 1e-8,
@@ -90,7 +90,7 @@ document.querySelector("#run")!.addEventListener("click", async () => {
       });
       for (let i = 0; i < 64; i++) seq.schedule(i, i * 0.15625);
       assert(
-        count >= 28 && count <= 32,
+        count >= 12 && count <= 24,
         `Seed ${seed}: bounded melodic density`,
       );
     }

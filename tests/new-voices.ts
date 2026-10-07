@@ -1,4 +1,5 @@
 import { BowedGlassSynth } from "../src/audio/modules/BowedGlassSynth";
+import { FeltPianoSynth } from "../src/audio/modules/FeltPianoSynth";
 import { PadSynth } from "../src/audio/modules/PadSynth";
 import { PluckSynth } from "../src/audio/modules/PluckSynth";
 import { MachineSynth } from "../src/audio/modules/MachineSynth";
@@ -10,7 +11,7 @@ const check = (ok: boolean, label: string) => {
   if (!ok) throw Error(label);
 };
 async function render(
-  kind: "pad" | "pluck" | "machine" | "ghost" | "bow",
+  kind: "pad" | "pluck" | "machine" | "ghost" | "bow" | "piano",
   volume = 0.5,
   stop = false,
 ) {
@@ -19,6 +20,15 @@ async function render(
   let synth:
     BowedGlassSynth | PadSynth | PluckSynth | MachineSynth | GhostVoice;
   if (kind === "machine") synth = new MachineSynth(ctx, dest);
+  else if (kind === "piano")
+    synth = new FeltPianoSynth(ctx as unknown as AudioContext, dest, {
+      ...defaults.ghost,
+      volume,
+      attack: 0.012,
+      decay: 0.24,
+      sustain: 0.12,
+      release: 0.32,
+    });
   else if (kind === "bow")
     synth = new BowedGlassSynth(ctx as unknown as AudioContext, dest, {
       ...defaults.ghost,
@@ -67,7 +77,14 @@ const rms = (data: Float32Array, start = 0) =>
       (data.length - start),
   );
 try {
-  for (const kind of ["pad", "pluck", "machine", "ghost", "bow"] as const) {
+  for (const kind of [
+    "pad",
+    "pluck",
+    "machine",
+    "ghost",
+    "bow",
+    "piano",
+  ] as const) {
     const sound = await render(kind),
       muted = await render(kind, 0),
       stopped = await render(kind, 0.5, true);

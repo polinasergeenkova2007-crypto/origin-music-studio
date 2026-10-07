@@ -1,3 +1,4 @@
+import { FeltPianoSynth } from "../src/audio/modules/FeltPianoSynth";
 import { BowedGlassSynth } from "../src/audio/modules/BowedGlassSynth";
 import { Sequencer } from "../src/audio/sequencing/Sequencer";
 import { melodyDefaults } from "../src/state/melody";
@@ -24,21 +25,22 @@ try {
     chime: add("chime"),
     bass: add("bass"),
     bow: add("bow"),
+    piano: add("piano"),
     glass: add("glass"),
     noise: (t) => events.push({ role: "noise", note: 0, time: t }),
   });
   for (let step = 0; step < 256; step++) score.schedule(step, step * tick);
-  const bells = events.filter((e) => e.role === "chime");
+  const bells = events.filter((e) => e.role === "piano");
   check(
     bells.length >= 112,
-    "Bell melody has at least seven scored notes per bar",
+    "Felt piano leads with seven scored notes per bar",
   );
-  check(bells[0].time === 0, "Bell theme starts immediately");
+  check(bells[0].time === 0, "Piano theme starts immediately");
   check(
     bells.every(
       (e, i) => i === 0 || e.time - bells[i - 1].time <= tick * 4 + 0.001,
     ),
-    "No long gaps in the bell theme",
+    "No long gaps in the piano theme",
   );
   check(
     events
@@ -47,8 +49,8 @@ try {
     "All pitched layers stay in D natural minor",
   );
   check(
-    new Set(events.map((e) => e.role)).size === 7,
-    "Seven instrument layers take part in the composition",
+    new Set(events.map((e) => e.role)).size === 8,
+    "Eight instrument layers take part in the composition",
   );
   check(
     events
@@ -92,6 +94,16 @@ try {
       echo: 0.12,
     }),
     noise = new NoiseSynth(ctx, bus.input),
+    piano = new FeltPianoSynth(ctx as unknown as AudioContext, bus.input, {
+      ...defaults.ghost,
+      attack: 0.012,
+      decay: 0.24,
+      sustain: 0.12,
+      release: 0.32,
+      filter: 2200,
+      volume: melodyDefaults.piano,
+      pan: -0.08,
+    }),
     bow = new BowedGlassSynth(ctx as unknown as AudioContext, bus.input, {
       ...defaults.ghost,
       attack: 0.18,
@@ -129,6 +141,7 @@ try {
     glass: (n, t, v, p) => glass.play(n, t, v, p),
     noise: (t, d) => noise.play(t, d),
     bow: (n, t, d, v) => bow.play(n, t, d, v),
+    piano: (n, t, d, v) => piano.play(n, t, d, v),
   });
   for (let step = 0; step < 256; step++) real.schedule(step, 0.1 + step * tick);
   const audio = await ctx.startRendering(),
@@ -162,7 +175,8 @@ try {
       chime.activeCount +
       glass.activeCount +
       noise.activeCount +
-      bow.activeCount ===
+      bow.activeCount +
+      piano.activeCount ===
       0,
     "All oscillators and buffers clean up",
   );
