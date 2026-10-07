@@ -1,4 +1,5 @@
 import { BowedGlassSynth } from "../modules/BowedGlassSynth";
+import { FeltPianoSynth } from "../modules/FeltPianoSynth";
 import { PadSynth } from "../modules/PadSynth";
 import { PluckSynth } from "../modules/PluckSynth";
 import { MachineSynth } from "../modules/MachineSynth";
@@ -23,6 +24,7 @@ export class AudioEngine {
   private noise?: NoiseSynth;
   private pad?: PadSynth;
   private bow?: BowedGlassSynth;
+  private piano?: FeltPianoSynth;
   private pluck?: PluckSynth;
   private machine?: MachineSynth;
   private voiceSettings = { ...defaults };
@@ -88,6 +90,16 @@ export class AudioEngine {
         volume: this.melody.bow,
         pan: -0.25,
       });
+      this.piano = new FeltPianoSynth(this.context, this.master.input, {
+        ...defaults.ghost,
+        attack: 0.012,
+        decay: 0.24,
+        sustain: 0.12,
+        release: 0.32,
+        filter: 2200,
+        volume: this.melody.piano,
+        pan: -0.08,
+      });
       this.machine = new MachineSynth(this.context, this.master.input);
       const seq = new Sequencer(() => this.melody, {
         tone: (energy, time) => this.automateTone(energy, time),
@@ -101,6 +113,7 @@ export class AudioEngine {
         noise: (t, d) => this.noise!.play(t, d),
         pad: (n, t, d, v) => this.pad!.play(n, t, d, v),
         pluck: (n, t, d, v) => this.pluck!.play(n, t, d, v),
+        piano: (n, t, d, v) => this.piano!.play(n, t, d, v),
         bow: (n, t, d, v) => this.bow!.play(n, t, d, v),
         machine: (t, k) => this.machine!.play(t, k),
       });
@@ -147,6 +160,7 @@ export class AudioEngine {
     this.noise?.setVolume(settings.noise);
     this.pad?.setVolume(settings.pad);
     this.bow?.setVolume(settings.bow);
+    this.piano?.setVolume(settings.piano);
     this.pluck?.setVolume(settings.pluck);
     this.machine?.setVolume(settings.machine);
     if (this.voices) {
@@ -202,6 +216,7 @@ export class AudioEngine {
     this.noise?.stop();
     this.pad?.stop();
     this.bow?.stop();
+    this.piano?.stop();
     this.pluck?.stop();
     this.machine?.stop();
     this.updateMelody(this.melody);
@@ -225,6 +240,7 @@ export class AudioEngine {
       (this.noise?.activeCount ?? 0) +
       (this.pad?.activeCount ?? 0) +
       (this.bow?.activeCount ?? 0) +
+      (this.piano?.activeCount ?? 0) +
       (this.pluck?.activeCount ?? 0) +
       (this.machine?.activeCount ?? 0)
     );
@@ -239,6 +255,7 @@ export class AudioEngine {
     this.noise?.dispose();
     this.pad?.dispose();
     this.bow?.dispose();
+    this.piano?.dispose();
     this.pluck?.dispose();
     this.machine?.dispose();
     if (this.context) {
@@ -255,6 +272,7 @@ export class AudioEngine {
     this.noise = undefined;
     this.pad = undefined;
     this.bow = undefined;
+    this.piano = undefined;
     this.pluck = undefined;
     this.machine = undefined;
     this.scheduler = undefined;
