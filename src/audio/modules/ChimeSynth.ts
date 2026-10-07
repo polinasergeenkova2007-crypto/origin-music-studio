@@ -60,7 +60,7 @@ export class ChimeSynth {
     const t = this.context.currentTime;
     for (const ring of this.rings) {
       ring.filter.frequency.setTargetAtTime(
-        1700 + (1 - this.settings.softness) * 7000,
+        1100 + (1 - this.settings.softness) * 4800,
         t,
         0.025,
       );
@@ -81,7 +81,7 @@ export class ChimeSynth {
     brightness.gain.value = 0.35 + s.shimmer;
     brightness.connect(mix);
     filter.type = "lowpass";
-    filter.frequency.value = 1700 + (1 - s.softness) * 7000;
+    filter.frequency.value = 1100 + (1 - s.softness) * 4800;
     filter.Q.value = 0.5;
     panner.pan.value = pan;
     mix.connect(filter).connect(panner).connect(this.output);
@@ -94,8 +94,8 @@ export class ChimeSynth {
       envelopes: [],
     };
     const duration = s.tail;
-    const ratios = [1, 2.01, 2.76, 4.08, 5.43],
-      levels = [0.8, 0.26, 0.14, 0.065, 0.035];
+    const ratios = [1, 2, 3, 4, 5],
+      levels = [0.8, 0.16, 0.045, 0.012, 0.004];
     ratios.forEach((ratio, i) => {
       const oscillator = this.context.createOscillator(),
         amp = this.context.createGain();
@@ -103,7 +103,7 @@ export class ChimeSynth {
       oscillator.frequency.value = f * ratio;
       const peak = velocity * 0.24 * levels[i];
       amp.gain.setValueAtTime(0, time);
-      amp.gain.linearRampToValueAtTime(peak, time + 0.009 + s.softness * 0.025);
+      amp.gain.linearRampToValueAtTime(peak, time + 0.014 + s.softness * 0.035);
       amp.gain.exponentialRampToValueAtTime(
         0.00001,
         time + duration / (1 + i * 0.32),
@@ -114,18 +114,6 @@ export class ChimeSynth {
       ring.nodes.push(oscillator, amp);
       ring.envelopes.push(amp);
     });
-    // Low-index FM adds a metallic attack, then quickly becomes a pure ringing fundamental.
-    const mod = this.context.createOscillator(),
-      index = this.context.createGain();
-    mod.frequency.value = f * 1.414;
-    index.gain.setValueAtTime(
-      f * (0.08 + s.shimmer * 0.28) * (1 - s.softness * 0.6),
-      time,
-    );
-    index.gain.exponentialRampToValueAtTime(0.001, time + 0.24);
-    mod.connect(index).connect(ring.oscillators[0].frequency);
-    ring.oscillators.push(mod);
-    ring.nodes.push(mod, index);
     this.rings.add(ring);
     let remaining = ring.oscillators.length;
     ring.oscillators.forEach((o) => {
