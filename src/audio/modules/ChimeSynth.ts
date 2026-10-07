@@ -17,6 +17,7 @@ export class ChimeSynth {
     private context: BaseAudioContext,
     private destination: AudioNode,
     private settings: MelodySettings,
+    private size: "small" | "large" = "small",
   ) {
     this.output = context.createGain();
     this.output.gain.value = 0.72;
@@ -60,7 +61,7 @@ export class ChimeSynth {
     const t = this.context.currentTime;
     for (const ring of this.rings) {
       ring.filter.frequency.setTargetAtTime(
-        1100 + (1 - this.settings.softness) * 4800,
+        2400 + (1 - this.settings.softness) * 7000,
         t,
         0.025,
       );
@@ -81,7 +82,7 @@ export class ChimeSynth {
     brightness.gain.value = 0.35 + s.shimmer;
     brightness.connect(mix);
     filter.type = "lowpass";
-    filter.frequency.value = 1100 + (1 - s.softness) * 4800;
+    filter.frequency.value = 2400 + (1 - s.softness) * 7000;
     filter.Q.value = 0.5;
     panner.pan.value = pan;
     mix.connect(filter).connect(panner).connect(this.output);
@@ -94,8 +95,15 @@ export class ChimeSynth {
       envelopes: [],
     };
     const duration = s.tail;
-    const ratios = [1, 2, 3, 4, 5],
-      levels = [0.8, 0.16, 0.045, 0.012, 0.004];
+    // Bell modes: hum, prime, minor third, fifth, nominal and short strike modes.
+    const ratios =
+      this.size === "large"
+        ? [0.5, 1, 1.19, 1.5, 2.01, 2.74, 3.76, 4.07]
+        : [1, 2.76, 5.4, 8.93, 13.34];
+    const levels =
+      this.size === "large"
+        ? [0.36, 0.65, 0.3, 0.16, 0.38, 0.12, 0.06, 0.035]
+        : [0.64, 0.48, 0.19, 0.07, 0.025];
     ratios.forEach((ratio, i) => {
       const oscillator = this.context.createOscillator(),
         amp = this.context.createGain();
@@ -103,10 +111,13 @@ export class ChimeSynth {
       oscillator.frequency.value = f * ratio;
       const peak = velocity * 0.24 * levels[i];
       amp.gain.setValueAtTime(0, time);
-      amp.gain.linearRampToValueAtTime(peak, time + 0.014 + s.softness * 0.035);
+      amp.gain.linearRampToValueAtTime(
+        peak,
+        time + (this.size === "large" ? 0.005 : 0.002) + s.softness * 0.004,
+      );
       amp.gain.exponentialRampToValueAtTime(
         0.00001,
-        time + duration / (1 + i * 0.32),
+        time + duration / (1 + i * (this.size === "large" ? 0.16 : 0.5)),
       );
       amp.gain.linearRampToValueAtTime(0, time + duration + 0.015);
       oscillator.connect(amp).connect(i === 0 ? mix : brightness);
