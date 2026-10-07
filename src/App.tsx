@@ -205,6 +205,19 @@ export default function App() {
           >
             Один колокольчик
           </button>
+          <button
+            onClick={async () => {
+              try {
+                engine.current.updateMelody(melody);
+                await engine.current.audition(settings, volume, true);
+                setReady(true);
+              } catch (e) {
+                setError(String(e));
+              }
+            }}
+          >
+            Удар набата
+          </button>
         </div>
       </section>
       <section className="arrangement-strip">
@@ -287,6 +300,7 @@ export default function App() {
                       machine: 0,
                       bow: 0,
                       piano: 0,
+                      tower: 0,
                       [id]: 1,
                     })
                   }
@@ -308,6 +322,12 @@ export default function App() {
         <div className="macro-grid">
           {(
             [
+              {
+                key: "tower",
+                name: "Большой колокол · набат",
+                description:
+                  "Тяжёлый удар и долгий низкий гул на границах фраз",
+              },
               {
                 key: "piano",
                 name: "Войлочное электропиано",
@@ -391,6 +411,7 @@ export default function App() {
               machine: melodyDefaults.machine,
               bow: melodyDefaults.bow,
               piano: melodyDefaults.piano,
+              tower: melodyDefaults.tower,
             })
           }
         >
