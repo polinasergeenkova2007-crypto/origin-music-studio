@@ -87,11 +87,11 @@ export default function App() {
           <h1>
             Мелодия на первом плане.
             <br />
-            Живой ритм и холодный звон.
+            Мягкие клавиши и тёплый звон.
           </h1>
           <p className="description">
-            Колокольчики ведут цельную тему, два синтезатора и бас создают
-            движение.
+            Мягкое электропиано ведёт тему, колокольчики и два синтезатора
+            создают движение.
             <br />
             Нажмите «Слушать» — мелодия начнёт играть сама.
           </p>
@@ -182,8 +182,8 @@ export default function App() {
           </span>
           <h2>Тема, развитие и кульминация</h2>
           <p>
-            Колокольчики — мелодия. BODY — ритм. GHOST — второй голос. Бас,
-            стекло и шум добавляют глубину и акценты.
+            Электропиано — мелодия. Колокольчики — акценты. BODY — ритм, GHOST —
+            второй голос. Бас, стекло и шум добавляют глубину и акценты.
           </p>
         </div>
         <div className="phrase-actions">
@@ -234,7 +234,7 @@ export default function App() {
         <div className="part-roles">
           <span>BODY · ритмическая партия</span>
           <span>GHOST · второй голос</span>
-          <span>CHIME · главная мелодия</span>
+          <span>PIANO · главная мелодия</span>
         </div>
       </section>
       <MelodyControls settings={melody} change={changeMelody} />
@@ -286,6 +286,7 @@ export default function App() {
                       pluck: 0,
                       machine: 0,
                       bow: 0,
+                      piano: 0,
                       [id]: 1,
                     })
                   }
@@ -308,6 +309,11 @@ export default function App() {
           {(
             [
               {
+                key: "piano",
+                name: "Войлочное электропиано",
+                description: "Мягкая основная тема с округлой атакой",
+              },
+              {
                 key: "bow",
                 name: "Смычковое стекло",
                 description: "Тёплый протяжный ответ между переливами",
@@ -315,7 +321,7 @@ export default function App() {
               {
                 key: "chime",
                 name: "Колокольчики",
-                description: "Основная нежная мелодия",
+                description: "Редкие мягкие акценты над основной темой",
               },
               {
                 key: "bass",
@@ -384,6 +390,7 @@ export default function App() {
               pluck: melodyDefaults.pluck,
               machine: melodyDefaults.machine,
               bow: melodyDefaults.bow,
+              piano: melodyDefaults.piano,
             })
           }
         >
