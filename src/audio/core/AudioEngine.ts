@@ -1,3 +1,4 @@
+import { TowerBellSynth } from "../modules/TowerBellSynth";
 import { BowedGlassSynth } from "../modules/BowedGlassSynth";
 import { FeltPianoSynth } from "../modules/FeltPianoSynth";
 import { PadSynth } from "../modules/PadSynth";
@@ -19,6 +20,7 @@ export class AudioEngine {
   private master?: MasterBus;
   private voices?: { body: BodyVoice; ghost: GhostVoice };
   private chime?: ChimeSynth;
+  private tower?: TowerBellSynth;
   private bass?: BassSynth;
   private glass?: ChimeSynth;
   private noise?: NoiseSynth;
@@ -40,6 +42,11 @@ export class AudioEngine {
         body: new BodyVoice(this.context, this.master.input, settings.body),
         ghost: new GhostVoice(this.context, this.master.input, settings.ghost),
       };
+      this.tower = new TowerBellSynth(
+        this.context,
+        this.master.input,
+        this.melody,
+      );
       this.chime = new ChimeSynth(this.context, this.master.input, this.melody);
       this.bass = new BassSynth(this.context, this.master.input, {
         ...defaults.body,
@@ -103,6 +110,7 @@ export class AudioEngine {
       this.machine = new MachineSynth(this.context, this.master.input);
       const seq = new Sequencer(() => this.melody, {
         tone: (energy, time) => this.automateTone(energy, time),
+        tower: (n, t, v) => this.tower!.play(n, t, v, 0.08),
         chime: (n, t, v, p) => this.chime!.play(n, t, v, p),
         body: (n, t, d, v, release) =>
           this.voices!.body.play(n, t, d, v, release),
@@ -161,6 +169,8 @@ export class AudioEngine {
     this.pad?.setVolume(settings.pad);
     this.bow?.setVolume(settings.bow);
     this.piano?.setVolume(settings.piano);
+    if (previous.tower > 0 && settings.tower === 0) this.tower?.stop();
+    this.tower?.setVolume(settings.tower);
     this.pluck?.setVolume(settings.pluck);
     this.machine?.setVolume(settings.machine);
     if (this.voices) {
@@ -182,11 +192,18 @@ export class AudioEngine {
       this.melody.shimmer * (0.55 + energy * 0.75),
     );
   }
-  async audition(settings: Record<VoiceId, VoiceSettings>, volume: number) {
+  async audition(
+    settings: Record<VoiceId, VoiceSettings>,
+    volume: number,
+    tower = false,
+  ) {
     const generation = this.generation;
     await this.start(settings, volume);
-    if (generation === this.generation)
-      this.chime?.play(74, this.context!.currentTime + 0.02, 0.7, 0);
+    if (generation === this.generation) {
+      if (tower)
+        this.tower?.play(50, this.context!.currentTime + 0.02, 0.8, 0.08);
+      else this.chime?.play(74, this.context!.currentTime + 0.02, 0.7, 0);
+    }
   }
   noteOn(id: VoiceId, note: number) {
     this.voices?.[id].noteOn(note);
@@ -210,6 +227,7 @@ export class AudioEngine {
     this.scheduler?.stop();
     this.voices?.body.stop();
     this.voices?.ghost.stop();
+    this.tower?.stop();
     this.chime?.stop();
     this.bass?.stop();
     this.glass?.stop();
@@ -234,6 +252,7 @@ export class AudioEngine {
     return (
       (this.voices?.body.activeCount ?? 0) +
       (this.voices?.ghost.activeCount ?? 0) +
+      (this.tower?.activeCount ?? 0) +
       (this.chime?.activeCount ?? 0) +
       (this.bass?.activeCount ?? 0) +
       (this.glass?.activeCount ?? 0) +
@@ -249,6 +268,7 @@ export class AudioEngine {
     this.stop();
     this.voices?.body.dispose();
     this.voices?.ghost.dispose();
+    this.tower?.dispose();
     this.chime?.dispose();
     this.bass?.dispose();
     this.glass?.dispose();
@@ -266,6 +286,7 @@ export class AudioEngine {
     this.context = undefined;
     this.voices = undefined;
     this.master = undefined;
+    this.tower = undefined;
     this.chime = undefined;
     this.bass = undefined;
     this.glass = undefined;
