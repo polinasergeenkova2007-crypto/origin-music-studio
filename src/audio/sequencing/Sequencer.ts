@@ -4,6 +4,12 @@ import { bellMelody, bellSteps } from "../../composition/bellMelody";
 
 import type { MelodySettings } from "../../state/melody";
 export interface Instruments {
+  piano?: (
+    note: number,
+    time: number,
+    duration: number,
+    velocity: number,
+  ) => void;
   bow?: (
     note: number,
     time: number,
@@ -69,15 +75,25 @@ export class Sequencer {
         index =
           s.seed === 17
             ? bellIndex
-            : (bellIndex + (s.seed % 3)) % phrase.length;
-      this.instruments.chime(
+            : (bellIndex + ((s.seed - 17) % 3) + 1) % phrase.length;
+      const note =
         phrase[
           s.seed !== 17 && s.seed % 2 === 0 ? phrase.length - 1 - index : index
-        ],
+        ];
+      // Felt keys carry the phrase; celesta glints punctuate its turns.
+      this.instruments.piano?.(
+        note - 12,
         time,
-        ([0, 3].includes(bellIndex) ? 0.84 : 0.62 + bellIndex * 0.015) * gain,
-        bellIndex % 2 === 0 ? -0.18 : 0.18,
+        tick * (bellIndex === 6 ? 2 : 0.8),
+        ([0, 3].includes(bellIndex) ? 0.75 : 0.52 + bellIndex * 0.015) * gain,
       );
+      if ([0, 3, 6].includes(bellIndex))
+        this.instruments.chime(
+          note,
+          time,
+          (bellIndex === 0 ? 0.62 : 0.42) * gain,
+          bellIndex === 3 ? -0.18 : 0.18,
+        );
     }
     // Low rhythmic BODY, mid-register GHOST, high bell melody: interlocking attacks.
     if (
@@ -116,9 +132,9 @@ export class Sequencer {
       this.instruments.noise?.(time, tick * 0.8);
     // Density decorates the current phrase in every section; the core melody stays intact.
     if (
-      (position === 8 && s.density > 0.35) ||
-      (position === 6 && s.density > 0.7) ||
-      (position === 15 && s.density > 0.9)
+      (position === 8 && s.density > 0.65) ||
+      (position === 6 && s.density > 0.85) ||
+      (position === 15 && s.density > 0.95)
     )
       this.instruments.chime(
         bellMelody[bar][position === 6 ? 2 : 3],
