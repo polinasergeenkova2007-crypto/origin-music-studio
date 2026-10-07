@@ -18,6 +18,7 @@ export interface MelodySettings {
   machine: number;
   bow: number;
   piano: number;
+  tower: number;
 }
 export const melodyDefaults: MelodySettings = {
   bpm: 108,
@@ -39,4 +40,5 @@ export const melodyDefaults: MelodySettings = {
   machine: 0.2,
   bow: 0.4,
   piano: 0.62,
+  tower: 0.32,
 };
