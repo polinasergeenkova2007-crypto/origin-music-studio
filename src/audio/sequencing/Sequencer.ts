@@ -4,6 +4,7 @@ import { bellMelody, bellSteps } from "../../composition/bellMelody";
 
 import type { MelodySettings } from "../../state/melody";
 export interface Instruments {
+  reverse?: (time: number, duration: number, frequency: number) => void;
   beat?: (
     kind: "kick" | "snare" | "hat",
     time: number,
@@ -96,6 +97,8 @@ export class Sequencer {
       beat: active.has("beat") ? this.instruments.beat : undefined,
     };
     this.instruments.tone?.(energy, time);
+    if ((bar === 7 && position === 8) || (bar === 11 && position === 12))
+      this.instruments.reverse?.(time, tick * (bar === 7 ? 8 : 4), 146.83);
     const rise = section.id === "rise";
     const drumGain =
       section.id === "intro" ? 0.7 : section.id === "return" ? 0.65 : 1;
