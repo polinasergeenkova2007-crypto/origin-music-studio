@@ -31,7 +31,7 @@ export class NoiseSynth {
   setVolume(value: number) {
     this.output.gain.setTargetAtTime(value, this.context.currentTime, 0.025);
   }
-  play(time: number, duration: number) {
+  play(time: number, duration: number, intensity = 1) {
     const source = this.context.createBufferSource(),
       gain = this.context.createGain(),
       filter = this.context.createBiquadFilter(),
@@ -43,7 +43,7 @@ export class NoiseSynth {
     filter.Q.value = 0.8;
     pan.pan.value = 0.45;
     gain.gain.setValueAtTime(0, time);
-    gain.gain.linearRampToValueAtTime(0.22, time + duration * 0.35);
+    gain.gain.linearRampToValueAtTime(0.22 * intensity, time + duration * 0.35);
     gain.gain.linearRampToValueAtTime(0, time + duration);
     source.connect(filter).connect(gain).connect(pan).connect(this.output);
     const cloud = { source, gain, nodes: [source, filter, gain, pan] };
