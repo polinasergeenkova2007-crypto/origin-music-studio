@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, type CSSProperties } from "react";
 export function Knob({
   label,
   displayValue,
@@ -22,7 +22,8 @@ export function Knob({
   const update = (next: number) =>
     onChange(Math.max(min, Math.min(max, Math.round(next / step) * step)));
   return (
-    <div className="knob-control">
+    <div className="knob-control" style={{"--knob-angle": `${-135 + ((value-min)/(max-min))*270}deg`} as CSSProperties}>
+      <div className="knob-dial" aria-hidden="true"><svg viewBox="0 0 100 100">{Array.from({length:16},(_,i)=>{const angle=(-135+i*18)*Math.PI/180;const x=50+43*Math.sin(angle),y=50-43*Math.cos(angle);return <rect key={i} x={x-5} y={y-3} width="10" height="6" rx=".6" transform={`rotate(${-135+i*18},${x},${y})`} fill={i/15<=(value-min)/(max-min)?"#ef9995":"#deded8"}/>;})}</svg><b>▸</b></div>
       <span className={hideLabel ? "sr-only" : undefined}>{label}</span>
       <button
         type="button"
