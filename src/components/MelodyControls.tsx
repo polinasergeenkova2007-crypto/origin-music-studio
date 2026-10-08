@@ -55,7 +55,7 @@ export function MelodyControls({
         {controls.map((c) => (
           <label key={c.key}>
             <div className="control-title">
-              <span>{c.label}</span>
+              <span className="sr-only">{c.label}</span>
               <output>
                 {c.key === "tail"
                   ? settings[c.key].toFixed(1) + " с"

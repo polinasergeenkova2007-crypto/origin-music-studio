@@ -46,7 +46,7 @@ export function VoicePanel({
         {controls.map(([key, label, min, max, step]) => (
           <label key={key}>
             <span>
-              {label}
+              <span className="sr-only">{label}</span>
               <b>
                 {key === "filter"
                   ? settings.filter + " Hz"
