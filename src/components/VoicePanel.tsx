@@ -35,24 +35,14 @@ export function VoicePanel({
           {id === "body" ? "ДВА ГОЛОСА" : "МЯГКИЙ СИНУС"}
         </span>
       </div>
-      <div className="wave">
-        <span>Форма волны</span>
-        <select
-          aria-label={id + " waveform"}
-          value={settings.waveform}
-          onChange={(e) =>
-            change({ ...settings, waveform: e.target.value as OscillatorType })
-          }
-        >
-          {["sawtooth", "triangle", "square", "sine"].map((w) => (
-            <option key={w}>{w}</option>
-          ))}
-        </select>
-        <span className="wave-mark">
-          {id === "body" ? "╱╲╱╲╱╲╱╲" : "∿ ∿ ∿ ∿"}
-        </span>
-      </div>
-      <ControlGroups titles={["Уровень и фильтр", "Резонанс и панорама", "Атака и спад", "Удержание и затухание"]}>
+      <ControlGroups
+        titles={[
+          "Уровень и фильтр",
+          "Резонанс и панорама",
+          "Атака и спад",
+          "Удержание и затухание",
+        ]}
+      >
         {controls.map(([key, label, min, max, step]) => (
           <label key={key}>
             <span>
