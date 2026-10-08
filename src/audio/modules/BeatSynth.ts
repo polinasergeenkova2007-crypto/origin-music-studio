@@ -32,55 +32,40 @@ export class BeatSynth {
   play(kind: Drum, time: number, velocity = 1, open = false) {
     const amp = this.context.createGain(),
       pan = this.context.createStereoPanner();
-    pan.pan.value = kind === "hat" ? 0.18 : kind === "snare" ? -0.12 : 0;
-    const damping = this.context.createBiquadFilter();
-    damping.type = "lowpass";
-    damping.frequency.value = kind === "kick" ? 700 : kind === "snare" ? 1500 : 3400;
-    damping.Q.value = 0.5;
-    amp.connect(damping).connect(pan).connect(this.output);
+    pan.pan.value = kind === "hat" ? 0.25 : 0;
+    amp.connect(pan).connect(this.output);
     const sources: Hit["sources"] = [],
-      nodes: AudioNode[] = [amp, pan, damping];
+      nodes: AudioNode[] = [amp, pan];
     const duration =
-      kind === "kick" ? 0.38 : kind === "snare" ? 0.18 : open ? 0.14 : 0.065;
+      kind === "kick" ? 0.32 : kind === "snare" ? 0.21 : open ? 0.18 : 0.045;
     const peak =
-      velocity * (kind === "kick" ? 0.65 : kind === "snare" ? 0.48 : 0.22);
+      velocity * (kind === "kick" ? 0.65 : kind === "snare" ? 0.32 : 0.11);
     amp.gain.setValueAtTime(0, time);
-    amp.gain.linearRampToValueAtTime(peak, time + 0.004);
+    amp.gain.linearRampToValueAtTime(peak, time + 0.001);
     amp.gain.exponentialRampToValueAtTime(0.00001, time + duration);
     if (kind !== "hat") {
       const osc = this.context.createOscillator();
       osc.type = "sine";
-      osc.frequency.setValueAtTime(kind === "kick" ? 95 : 310, time);
+      osc.frequency.setValueAtTime(kind === "kick" ? 165 : 210, time);
       osc.frequency.exponentialRampToValueAtTime(
-        kind === "kick" ? 43 : 180,
-        time + (kind === "kick" ? 0.045 : 0.028),
+        kind === "kick" ? 46 : 125,
+        time + (kind === "kick" ? 0.085 : 0.06),
       );
       const tone = this.context.createGain();
-      tone.gain.value = kind === "kick" ? 1 : 0.7;
+      tone.gain.value = kind === "kick" ? 1 : 0.35;
       osc.connect(tone).connect(amp);
       sources.push(osc);
       nodes.push(osc, tone);
-    }
-    if (kind === "snare") {
-      // Inharmonic, damped membrane mode makes the backbeat hollow rather than bright.
-      const cavity = this.context.createOscillator(), level = this.context.createGain();
-      cavity.type = "sine";
-      cavity.frequency.setValueAtTime(527, time);
-      cavity.frequency.exponentialRampToValueAtTime(391, time + 0.045);
-      level.gain.setValueAtTime(0.28, time);
-      level.gain.exponentialRampToValueAtTime(0.00001, time + 0.075);
-      cavity.connect(level).connect(amp);
-      sources.push(cavity); nodes.push(cavity, level);
     }
     const noise = this.context.createBufferSource(),
       filter = this.context.createBiquadFilter(),
       noiseAmp = this.context.createGain();
     noise.buffer = this.noise;
-    filter.type = "bandpass";
+    filter.type = kind === "snare" ? "bandpass" : "highpass";
     filter.frequency.value =
-      kind === "kick" ? 420 : kind === "snare" ? 900 : 2300;
-    filter.Q.value = kind === "hat" ? 1.8 : 0.9;
-    noiseAmp.gain.setValueAtTime(kind === "kick" ? 0.08 : kind === "snare" ? 0.45 : 1, time);
+      kind === "kick" ? 2800 : kind === "snare" ? 1900 : 6500;
+    filter.Q.value = 0.7;
+    noiseAmp.gain.setValueAtTime(kind === "kick" ? 0.22 : 1, time);
     if (kind === "kick")
       noiseAmp.gain.exponentialRampToValueAtTime(0.00001, time + 0.012);
     noise.connect(filter).connect(noiseAmp).connect(amp);
