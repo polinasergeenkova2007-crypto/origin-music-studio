@@ -4,18 +4,18 @@ export const sections = [
   {
     id: "intro",
     name: "Вступление",
-    description:
-      "Мягкое электропиано начинает тему, колокольчики добавляют акценты",
+    description: "Электропиано и звон; затем входят pad, бас и первые удары",
   },
   {
     id: "dialogue",
     name: "Диалог",
-    description: "Тема развивается, вступают стеклянные акценты",
+    description:
+      "Вступают второй синт и стекло, инструменты обмениваются фразами",
   },
   {
     id: "rise",
     name: "Подъём",
-    description: "Плотный басовый рисунок, высокая мелодия и больше акцентов",
+    description: "Полный состав, тяжёлый бит и короткие паузы перед ответами",
   },
   {
     id: "return",
@@ -88,5 +88,89 @@ export function arrangementAt(step: number) {
   const bar = Math.floor(step / 16) % 16,
     section = sections[Math.floor(bar / 4)],
     chord = chords[harmony[bar]];
-  return { bar, section, chord };
+  return {
+    bar,
+    section: { ...section, description: barDescriptions[bar] },
+    chord,
+  };
 }
+
+// Instrument entrances and dropouts across the sixteen bars.
+export const layerPlan = [
+  ["piano", "chime"],
+  ["piano", "chime", "pad"],
+  ["piano", "chime", "pad", "bass"],
+  ["piano", "chime", "bass", "body", "beat"],
+  ["piano", "chime", "bass", "body", "beat", "ghost", "tower"],
+  ["piano", "chime", "bass", "body", "beat", "bow", "glass"],
+  ["piano", "chime", "bass", "beat", "ghost", "pad", "pluck", "machine"],
+  ["piano", "chime", "bass", "body", "beat", "bow", "noise"],
+  [
+    "piano",
+    "chime",
+    "bass",
+    "body",
+    "beat",
+    "ghost",
+    "pad",
+    "bow",
+    "tower",
+    "machine",
+  ],
+  [
+    "piano",
+    "chime",
+    "bass",
+    "body",
+    "beat",
+    "glass",
+    "pluck",
+    "tower",
+    "noise",
+  ],
+  [
+    "piano",
+    "chime",
+    "bass",
+    "beat",
+    "ghost",
+    "pad",
+    "glass",
+    "pluck",
+    "machine",
+  ],
+  [
+    "piano",
+    "chime",
+    "bass",
+    "body",
+    "beat",
+    "ghost",
+    "bow",
+    "tower",
+    "noise",
+    "machine",
+  ],
+  ["piano", "chime", "pad", "bow", "tower"],
+  ["piano", "chime", "bass", "ghost", "pluck"],
+  ["piano", "chime", "bow"],
+  ["piano", "chime", "noise"],
+] as const;
+export const barDescriptions = [
+  "Только электропиано и лёгкий звон",
+  "Под темой появляется тёплый pad",
+  "Входит глубокий бас",
+  "Подключаются BODY, бочка и хай-хэты",
+  "Полный бит, второй синт и удар набата",
+  "Второй синт уступает место смычковому стеклу",
+  "Возвращается второй синт; pluck и щелчки отвечают теме",
+  "Во второй половине такта ритм замолкает — остаётся протяжный ответ",
+  "Кульминация: полный ритм, оба синта и набат",
+  "Стеклянные акценты сменяют протяжный голос",
+  "BODY делает паузу; второй синт и pluck продолжают движение",
+  "Короткий ритмический обрыв перед тихим возвращением",
+  "Бит уходит; остаются тема, pad и низкий колокол",
+  "Последний ответ баса и второго синта",
+  "Тема и протяжное стекло без ритма",
+  "Только тема, звон и тихий воздух перед повтором",
+];
