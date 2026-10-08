@@ -1,3 +1,4 @@
+import { AudioBars } from "./components/AudioBars";
 import { ControlGroups } from "./components/ControlGroups";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AudioEngine } from "./audio/core/AudioEngine";
@@ -5,8 +6,6 @@ import { defaults, type VoiceId, type VoiceSettings } from "./state/types";
 import { melodyDefaults, type MelodySettings } from "./state/melody";
 import { VoicePanel } from "./components/VoicePanel";
 import { MelodyControls } from "./components/MelodyControls";
-import { energyAt } from "./composition/dynamics";
-import { arrangementAt, sections } from "./composition/afterimage";
 import { OutputMeter } from "./components/OutputMeter";
 export default function App() {
   const engine = useRef(new AudioEngine());
@@ -17,17 +16,7 @@ export default function App() {
     [ready, setReady] = useState(false),
     [starting, setStarting] = useState(false),
     [error, setError] = useState("");
-  const [position, setPosition] = useState(0);
   const [tempoDraft, setTempoDraft] = useState(String(melodyDefaults.bpm));
-  const arrangement = arrangementAt(position);
-  useEffect(() => {
-    if (!playing) {
-      setPosition(0);
-      return;
-    }
-    const timer = setInterval(() => setPosition(engine.current.position), 250);
-    return () => clearInterval(timer);
-  }, [playing]);
   const action = useRef(0);
   const stop = useCallback(() => {
     action.current++;
@@ -162,94 +151,13 @@ export default function App() {
           />
           <output>{Math.round((volume / 0.8) * 100)}%</output>
         </label>
+        <AudioBars engine={engine.current} playing={playing} />
       </section>
       {error && (
         <p role="alert" className="error">
           {error}
         </p>
       )}
-      <section className="composition-card">
-        <div>
-          <span className="pill">Ре минор</span>
-          <span className="pill">16 тактов</span>
-          <span className="pill">
-            {melody.seed === 17
-              ? "Исходная фраза"
-              : "Вариация " + (melody.seed - 17)}
-          </span>
-          <div className="signal-orbit" aria-hidden="true">
-            {[12,20,31,18,40,56,34,67,45,30,53,72,48,35,62,40,25,49,36,61,32,18,28,14].map((height,index)=><i key={index} style={{height}} />)}
-          </div>
-          <h2>Тема, развитие и кульминация</h2>
-          <p>
-            Электропиано — мелодия. Колокольчики — акценты. BODY — ритм, GHOST —
-            второй голос. Бас, стекло и шум добавляют глубину и акценты.
-          </p>
-        </div>
-        <div className="phrase-actions">
-          <button
-            onClick={() => changeMelody({ ...melody, seed: melody.seed + 1 })}
-          >
-            Новая вариация ↻
-          </button>
-          <button
-            onClick={async () => {
-              try {
-                engine.current.updateMelody(melody);
-                await engine.current.audition(settings, volume);
-                setReady(true);
-              } catch (e) {
-                setError(String(e));
-              }
-            }}
-          >
-            Один колокольчик
-          </button>
-          <button
-            onClick={async () => {
-              try {
-                engine.current.updateMelody(melody);
-                await engine.current.audition(settings, volume, true);
-                setReady(true);
-              } catch (e) {
-                setError(String(e));
-              }
-            }}
-          >
-            Удар набата
-          </button>
-        </div>
-      </section>
-      <section className="arrangement-strip">
-        <div className="arrangement-label">
-          <strong>{arrangement.section.name}</strong>
-          <span>
-            Такт {arrangement.bar + 1} / 16 · {arrangement.chord.name}
-          </span>
-        </div>
-        <p>{arrangement.section.description}</p>
-        <div className="energy-row">
-          <span>Напряжение · {Math.round(energyAt(position) * 100)}%</span>
-          <div className="energy-track">
-            <div style={{ width: `${energyAt(position) * 100}%` }} />
-          </div>
-        </div>
-        <div className="section-stages">
-          {sections.map((section) => (
-            <span
-              key={section.id}
-              className={arrangement.section.id === section.id ? "current" : ""}
-            >
-              {section.name}
-            </span>
-          ))}
-        </div>
-        <div className="part-roles">
-          <span>BODY · ритмическая партия</span>
-          <span>GHOST · второй голос</span>
-          <span>PIANO · главная мелодия</span>
-        </div>
-      </section>
       <MelodyControls settings={melody} change={changeMelody} />
       <div className="utility-row">
         <OutputMeter engine={engine.current} enabled={ready} />
