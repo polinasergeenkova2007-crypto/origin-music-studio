@@ -326,8 +326,8 @@ export default function App() {
             [
               {
                 key: "beat",
-                name: "Тяжёлый бит",
-                description: "Глубокая бочка, резкий снейр и яркие хай-хэты",
+                name: "Глухой пульс",
+                description: "Низкий удар, полый корпус и сухие шумовые шорохи",
               },
               {
                 key: "tower",
