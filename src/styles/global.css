@@ -37,3 +37,4 @@ header{padding:0}.intro{padding:0}.intro h1{font-size:28px}.eyebrow{font-size:8p
 @media(min-width:801px) and (max-height:820px){main{margin:12px auto;gap:10px 16px;padding:0 22px}.voices>div,.voices>div:last-child,.melody-panel,.instrument-panel{padding:12px}.knob{width:66px;height:66px;margin:10px 0;outline-width:5px}.knob i{left:27px;top:9px}.knob-control{gap:5px}.knob-control>span{font-size:9px}.instrument-panel .control-groups{gap:8px}.vertical-control input[type=range]{height:88px}.intro h1{font-size:26px}.transport{padding:11px}.control-group{padding:7px}.voice footer{display:none}}
 @media(max-width:800px){main{margin:16px auto;padding:0 16px}.knob{width:66px;height:66px;outline-width:5px}.knob i{left:27px;top:9px}}
 @media(min-width:801px) and (max-height:820px){main{margin:6px auto;gap:8px 16px}.instrument-panel .control-groups{gap:5px}.knob{margin:8px 0}.knob-control{gap:4px}.transport{padding:9px}}
+body{display:flow-root}
