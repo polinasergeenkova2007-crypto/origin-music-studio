@@ -302,6 +302,7 @@ export default function App() {
                       piano: 0,
                       tower: 0,
                       beat: 0,
+                      reverse: 0,
                       [id]: 1,
                     })
                   }
@@ -323,6 +324,12 @@ export default function App() {
         <div className="macro-grid">
           {(
             [
+              {
+                key: "reverse",
+                name: "Обратное металлическое дыхание",
+                description:
+                  "Нарастание и глубокий металлический удар в паузах",
+              },
               {
                 key: "beat",
                 name: "Тяжёлый бит",
@@ -419,6 +426,7 @@ export default function App() {
               piano: melodyDefaults.piano,
               tower: melodyDefaults.tower,
               beat: melodyDefaults.beat,
+              reverse: melodyDefaults.reverse,
             })
           }
         >
