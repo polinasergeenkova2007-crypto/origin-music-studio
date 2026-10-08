@@ -1,9 +1,7 @@
-import { BreathSynth } from "../modules/BreathSynth";
-import { ReverseMetalSynth } from "../modules/ReverseMetalSynth";
 import { BeatSynth } from "../modules/BeatSynth";
 import { TowerBellSynth } from "../modules/TowerBellSynth";
 import { BowedGlassSynth } from "../modules/BowedGlassSynth";
-import { ElectronicHarpSynth } from "../modules/ElectronicHarpSynth";
+import { FeltPianoSynth } from "../modules/FeltPianoSynth";
 import { PadSynth } from "../modules/PadSynth";
 import { PluckSynth } from "../modules/PluckSynth";
 import { MachineSynth } from "../modules/MachineSynth";
@@ -29,12 +27,10 @@ export class AudioEngine {
   private noise?: NoiseSynth;
   private pad?: PadSynth;
   private bow?: BowedGlassSynth;
-  private piano?: ElectronicHarpSynth;
+  private piano?: FeltPianoSynth;
   private pluck?: PluckSynth;
   private machine?: MachineSynth;
   private beat?: BeatSynth;
-  private breath?: BreathSynth;
-  private reverse?: ReverseMetalSynth;
   private voiceSettings = { ...defaults };
   private scheduler?: AudioScheduler;
   private melody = { ...melodyDefaults };
@@ -72,7 +68,6 @@ export class AudioEngine {
         space: 0.8,
         echo: 0.12,
       });
-      this.breath = new BreathSynth(this.context, this.master.input);
       this.noise = new NoiseSynth(this.context, this.master.input);
       this.pad = new PadSynth(this.context, this.master.input, {
         ...defaults.ghost,
@@ -104,23 +99,20 @@ export class AudioEngine {
         volume: this.melody.bow,
         pan: -0.25,
       });
-      this.piano = new ElectronicHarpSynth(this.context, this.master.input, {
+      this.piano = new FeltPianoSynth(this.context, this.master.input, {
         ...defaults.ghost,
-        attack: 0.006,
-        decay: 0.18,
-        sustain: 0.04,
-        release: 0.65,
-        filter: 3200,
+        attack: 0.012,
+        decay: 0.24,
+        sustain: 0.12,
+        release: 0.32,
+        filter: 2200,
         volume: this.melody.piano,
         pan: -0.08,
       });
-      this.reverse = new ReverseMetalSynth(this.context, this.master.input);
       this.beat = new BeatSynth(this.context, this.master.input);
       this.machine = new MachineSynth(this.context, this.master.input);
       const seq = new Sequencer(() => this.melody, {
         tone: (energy, time) => this.automateTone(energy, time),
-        reverse: (t, d, f) => this.reverse!.play(t, d, f),
-        breath: (t, d, v) => this.breath!.breathe(t, d, v),
         tower: (n, t, v) => this.tower!.play(n, t, v, 0.08),
         chime: (n, t, v, p) => this.chime!.play(n, t, v, p),
         body: (n, t, d, v, release) =>
@@ -187,8 +179,6 @@ export class AudioEngine {
     this.pluck?.setVolume(settings.pluck);
     this.machine?.setVolume(settings.machine);
     this.beat?.setVolume(settings.beat);
-    this.breath?.setVolume(settings.breath);
-    this.reverse?.setVolume(settings.reverse);
     if (this.voices) {
       this.update("body", this.voiceSettings.body);
       this.update("ghost", this.voiceSettings.ghost);
@@ -252,8 +242,6 @@ export class AudioEngine {
     this.bow?.stop();
     this.piano?.stop();
     this.pluck?.stop();
-    this.reverse?.stop();
-    this.breath?.stop();
     this.beat?.stop();
     this.machine?.stop();
     this.updateMelody(this.melody);
@@ -280,8 +268,6 @@ export class AudioEngine {
       (this.bow?.activeCount ?? 0) +
       (this.piano?.activeCount ?? 0) +
       (this.pluck?.activeCount ?? 0) +
-      (this.reverse?.activeCount ?? 0) +
-      (this.breath?.activeCount ?? 0) +
       (this.beat?.activeCount ?? 0) +
       (this.machine?.activeCount ?? 0)
     );
@@ -299,8 +285,6 @@ export class AudioEngine {
     this.bow?.dispose();
     this.piano?.dispose();
     this.pluck?.dispose();
-    this.reverse?.dispose();
-    this.breath?.dispose();
     this.beat?.dispose();
     this.machine?.dispose();
     if (this.context) {
@@ -320,8 +304,6 @@ export class AudioEngine {
     this.bow = undefined;
     this.piano = undefined;
     this.pluck = undefined;
-    this.reverse = undefined;
-    this.breath = undefined;
     this.beat = undefined;
     this.machine = undefined;
     this.scheduler = undefined;
