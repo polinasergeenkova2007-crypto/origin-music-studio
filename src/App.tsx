@@ -302,6 +302,7 @@ export default function App() {
                       piano: 0,
                       tower: 0,
                       beat: 0,
+                      breath: 0,
                       reverse: 0,
                       [id]: 1,
                     })
@@ -324,6 +325,11 @@ export default function App() {
         <div className="macro-grid">
           {(
             [
+              {
+                key: "breath",
+                name: "Дыхание и шелест",
+                description: "Вдох и выдох: заметно в начале, тише между фразами",
+              },
               {
                 key: "beat",
                 name: "Глухой пульс",
@@ -420,6 +426,7 @@ export default function App() {
               piano: melodyDefaults.piano,
               tower: melodyDefaults.tower,
               beat: melodyDefaults.beat,
+              breath: melodyDefaults.breath,
               reverse: melodyDefaults.reverse,
             })
           }
