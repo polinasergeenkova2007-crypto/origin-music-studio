@@ -1,4 +1,4 @@
-import { AudioBars } from "./components/AudioBars";
+import { Knob } from "./components/Knob";
 import { ControlGroups } from "./components/ControlGroups";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AudioEngine } from "./audio/core/AudioEngine";
@@ -151,7 +151,6 @@ export default function App() {
           />
           <output>{Math.round((volume / 0.8) * 100)}%</output>
         </label>
-        <AudioBars engine={engine.current} playing={playing} />
       </section>
       {error && (
         <p role="alert" className="error">
@@ -178,8 +177,8 @@ export default function App() {
       <section className="primary-voices">
         <h2>Два основных синтезатора</h2>
         <p className="section-hint">
-          Громкость, фильтр, панорама и форма волны меняют текущий звук. ADSR
-          применяется к следующим нотам.
+          Громкость, фильтр, панорама меняют текущий звук. ADSR применяется к
+          следующим нотам.
         </p>
         <div className="voices">
           {(["body", "ghost"] as const).map((id) => (
@@ -228,7 +227,10 @@ export default function App() {
       </section>
       <section className="melody-panel instrument-panel">
         <h2>Бас и дополнительные звуки</h2>
-        <ControlGroups size={3} titles={["Ритм и основная тема", "Звон и глубина", "Атмосфера", "Короткие акценты"]}>
+        <ControlGroups
+          size={3}
+          titles={["Ритм и основная тема", "Звон и глубина"]}
+        >
           {(
             [
               {
@@ -262,51 +264,16 @@ export default function App() {
                 name: "Смычковое стекло",
                 description: "Тёплый протяжный ответ между переливами",
               },
-              {
-                key: "glass",
-                name: "Стеклянные частицы",
-                description: "Редкие высокие вспышки в стерео",
-              },
-              {
-                key: "noise",
-                name: "Шумовой воздух",
-                description: "Плавные фильтрованные шумовые волны",
-              },
-              {
-                key: "pad",
-                name: "Тёплый pad",
-                description: "Мягкое стереофоническое облако под темой",
-              },
-              {
-                key: "pluck",
-                name: "Деревянный pluck",
-                description: "Короткие округлые ноты между фразами",
-              },
-              {
-                key: "machine",
-                name: "Механические щелчки",
-                description: "Тихие стуки и цифровые акценты",
-              },
             ] as const
           ).map((layer) => (
-            <label key={layer.key}>
-              <div className="control-title">
-                <span>{layer.name}</span>
-                <output>{Math.round(melody[layer.key] * 100)}%</output>
-              </div>
-              <input
-                type="range"
-                aria-label={layer.name}
-                min={0}
-                max={1}
-                step={0.01}
-                value={melody[layer.key]}
-                onChange={(e) =>
-                  changeMelody({ ...melody, [layer.key]: +e.target.value })
-                }
-              />
-              <small>{layer.description}</small>
-            </label>
+            <Knob
+              key={layer.key}
+              label={layer.name}
+              value={melody[layer.key]}
+              onChange={(value) =>
+                changeMelody({ ...melody, [layer.key]: value })
+              }
+            />
           ))}
         </ControlGroups>
         <button
