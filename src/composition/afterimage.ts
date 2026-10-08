@@ -4,7 +4,7 @@ export const sections = [
   {
     id: "intro",
     name: "Вступление",
-    description: "Электропиано и звон; затем входят pad, бас и первые удары",
+    description: "Арфа и звон; затем входят pad, бас и первые удары",
   },
   {
     id: "dialogue",
@@ -157,7 +157,7 @@ export const layerPlan = [
   ["piano", "chime", "noise"],
 ] as const;
 export const barDescriptions = [
-  "Только электропиано и лёгкий звон",
+  "Только арфа и лёгкий звон",
   "Под темой появляется тёплый pad",
   "Входит глубокий бас",
   "Подключаются BODY, бочка и хай-хэты",
