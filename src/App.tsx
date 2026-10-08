@@ -1,4 +1,4 @@
-import { Knob } from "./components/Knob";
+import { InstrumentControl } from "./components/InstrumentControl";
 import { ControlGroups } from "./components/ControlGroups";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AudioEngine } from "./audio/core/AudioEngine";
@@ -210,7 +210,8 @@ export default function App() {
               },
             ] as const
           ).map((layer) => (
-            <Knob
+            <InstrumentControl
+              kind={layer.key === "beat" || layer.key === "piano" ? "bar" : layer.key === "bass" || layer.key === "chime" ? "segments" : "step"}
               key={layer.key}
               label={layer.name}
               value={melody[layer.key]}
