@@ -6,14 +6,12 @@ import { defaults, type VoiceId, type VoiceSettings } from "./state/types";
 import { melodyDefaults, type MelodySettings } from "./state/melody";
 import { VoicePanel } from "./components/VoicePanel";
 import { MelodyControls } from "./components/MelodyControls";
-import { OutputMeter } from "./components/OutputMeter";
 export default function App() {
   const engine = useRef(new AudioEngine());
   const [settings, setSettings] = useState(defaults),
     [melody, setMelody] = useState(melodyDefaults),
     [volume, setVolume] = useState(0.65),
     [playing, setPlaying] = useState(false),
-    [ready, setReady] = useState(false),
     [starting, setStarting] = useState(false),
     [error, setError] = useState("");
   const [tempoDraft, setTempoDraft] = useState(String(melodyDefaults.bpm));
@@ -46,7 +44,6 @@ export default function App() {
     try {
       await engine.current.play(settings, volume, melody);
       if (token === action.current) {
-        setReady(true);
         setPlaying(true);
       }
     } catch (e) {
@@ -67,10 +64,6 @@ export default function App() {
   };
   return (
     <main>
-      <header>
-        <span className="brand">ORIGIN</span>
-        <span className="header-label">Музыкальная студия</span>
-      </header>
       <section className="intro">
         <div>
           <p className="eyebrow">ЭЛЕКТРОННЫЙ СИНТЕЗАТОР</p>
@@ -158,22 +151,6 @@ export default function App() {
         </p>
       )}
       <MelodyControls settings={melody} change={changeMelody} />
-      <div className="utility-row">
-        <OutputMeter engine={engine.current} enabled={ready} />
-        <button
-          className="reset"
-          onClick={() => {
-            changeMelody({ ...melodyDefaults });
-            setSettings(defaults);
-            setVolume(0.65);
-            engine.current.setVolume(0.65);
-            engine.current.update("body", defaults.body);
-            engine.current.update("ghost", defaults.ghost);
-          }}
-        >
-          Вернуть исходное звучание
-        </button>
-      </div>
       <section className="primary-voices">
         <h2>Два основных синтезатора</h2>
         <p className="section-hint">
@@ -300,10 +277,6 @@ export default function App() {
           Включить все слои
         </button>
       </section>
-      <footer className="page-footer">
-        <span>Оригинальная мелодия · атмосферные колокольчики</span>
-        <span>Esc — остановить</span>
-      </footer>
     </main>
   );
 }
