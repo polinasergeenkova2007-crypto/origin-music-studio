@@ -221,6 +221,9 @@ export default function App() {
             />
           ))}
         </ControlGroups>
+        <div className="extra-sounds" role="group" aria-label="Дополнительные звуки">
+          {([{key:"pad",name:"Тёплый pad",icon:"☁"},{key:"noise",name:"Шумовой воздух",icon:"≋"},{key:"glass",name:"Стеклянные частицы",icon:"✧"},{key:"pluck",name:"Деревянный pluck",icon:"⌁"},{key:"machine",name:"Механические щелчки",icon:"⋮"}] as const).map(layer=><button key={layer.key} className={"sound-pad sound-"+layer.key} aria-label={layer.name} aria-pressed={melody[layer.key]>0} onClick={()=>changeMelody({...melody,[layer.key]:melody[layer.key]>0?0:melodyDefaults[layer.key]})}><span aria-hidden="true">{layer.icon}</span><i/></button>)}
+        </div>
         <button
           className="all-layers"
           aria-label="Включить все слои"
