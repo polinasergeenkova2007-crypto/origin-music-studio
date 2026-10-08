@@ -1,3 +1,4 @@
+import { ControlGroups } from "./components/ControlGroups";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AudioEngine } from "./audio/core/AudioEngine";
 import { defaults, type VoiceId, type VoiceSettings } from "./state/types";
@@ -319,7 +320,7 @@ export default function App() {
       </section>
       <section className="melody-panel instrument-panel">
         <h2>Бас и дополнительные звуки</h2>
-        <div className="macro-grid">
+        <ControlGroups size={3} titles={["Ритм и основная тема", "Звон и глубина", "Атмосфера", "Короткие акценты"]}>
           {(
             [
               {
@@ -328,20 +329,20 @@ export default function App() {
                 description: "Глубокая бочка, резкий снейр и яркие хай-хэты",
               },
               {
-                key: "tower",
-                name: "Большой колокол · набат",
-                description:
-                  "Тяжёлый удар и долгий низкий гул на границах фраз",
-              },
-              {
                 key: "piano",
                 name: "Войлочное электропиано",
                 description: "Мягкая основная тема с округлой атакой",
               },
               {
-                key: "bow",
-                name: "Смычковое стекло",
-                description: "Тёплый протяжный ответ между переливами",
+                key: "bass",
+                name: "Глубокий бас",
+                description: "Синусовый саб с мягким верхним тоном",
+              },
+              {
+                key: "tower",
+                name: "Большой колокол · набат",
+                description:
+                  "Тяжёлый удар и долгий низкий гул на границах фраз",
               },
               {
                 key: "chime",
@@ -349,9 +350,9 @@ export default function App() {
                 description: "Редкие мягкие акценты над основной темой",
               },
               {
-                key: "bass",
-                name: "Глубокий бас",
-                description: "Синусовый саб с мягким верхним тоном",
+                key: "bow",
+                name: "Смычковое стекло",
+                description: "Тёплый протяжный ответ между переливами",
               },
               {
                 key: "glass",
@@ -399,7 +400,7 @@ export default function App() {
               <small>{layer.description}</small>
             </label>
           ))}
-        </div>
+        </ControlGroups>
         <button
           className="all-layers"
           onClick={() =>
