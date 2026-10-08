@@ -146,6 +146,8 @@ export class Sequencer {
         tick * (bellIndex === 6 ? 2 : 0.8),
         ([0, 3].includes(bellIndex) ? 0.75 : 0.52 + bellIndex * 0.015) * gain,
       );
+      if ([0, 3, 6].includes(bellIndex))
+        instruments.chime(note, time, (bellIndex === 0 ? 0.62 : 0.42) * gain, bellIndex === 3 ? -0.18 : 0.18);
     }
     // Low rhythmic BODY, mid-register GHOST, high bell melody: interlocking attacks.
     if (
@@ -182,21 +184,8 @@ export class Sequencer {
       instruments.glass?.(chord.glass - 12, time, 0.23 * gain, 0.55);
     if (position === 15 && (bar % 2 === 1 || section.id === "rise"))
       instruments.noise?.(time, tick * 0.8);
-    // Wind chimes: irregular clusters float independently of the drum grid.
-    if (position === 2 && ![2, 4, 7, 10, 12, 14].includes(bar)) {
-      let randomState = (s.seed * 7919 + bar * 104729 + 31) >>> 0;
-      const random = () => {
-        randomState = (Math.imul(randomState, 1664525) + 1013904223) >>> 0;
-        return randomState / 4294967296;
-      };
-      const count = 3 + Math.floor(s.density * 3);
-      let offset = 0.07 + random() * 0.19;
-      for (let hit = 0; hit < count; hit++) {
-        const note = bellMelody[bar][Math.floor(random() * 7)];
-        instruments.chime(note, time + offset, 0.36 + random() * 0.3, random() * 1.2 - 0.6);
-        offset += 0.14 + random() * 0.39;
-      }
-    }
+    if ((position === 8 && s.density > 0.65) || (position === 6 && s.density > 0.85) || (position === 15 && s.density > 0.95))
+      instruments.chime(bellMelody[bar][position === 6 ? 2 : 3], time, (0.12 + s.density * 0.18) * gain, position === 6 ? -0.35 : 0.35);
     // Long answers cross a bar line every four bars; shorter replies keep the flow alive.
     const longAnswer = bar % 4 === 0 || bar % 4 === 3;
     if (position === 6 || (position === 13 && bar % 2 === 1 && !longAnswer))
