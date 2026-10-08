@@ -160,39 +160,6 @@ export default function App() {
         <div className="voices">
           {(["body", "ghost"] as const).map((id) => (
             <div key={id}>
-              <div className="layer-switch">
-                <button
-                  aria-pressed={melody[id] > 0}
-                  onClick={() =>
-                    changeMelody({ ...melody, [id]: melody[id] > 0 ? 0 : 1 })
-                  }
-                >
-                  {id.toUpperCase()} · {melody[id] > 0 ? "Включён" : "Выключен"}
-                </button>
-                <button
-                  onClick={() =>
-                    changeMelody({
-                      ...melody,
-                      body: 0,
-                      ghost: 0,
-                      chime: 0,
-                      bass: 0,
-                      glass: 0,
-                      noise: 0,
-                      pad: 0,
-                      pluck: 0,
-                      machine: 0,
-                      bow: 0,
-                      piano: 0,
-                      tower: 0,
-                      beat: 0,
-                      [id]: 1,
-                    })
-                  }
-                >
-                  Слушать отдельно {id.toUpperCase()}
-                </button>
-              </div>
               <VoicePanel
                 id={id}
                 settings={settings[id]}
