@@ -20,6 +20,7 @@ export interface MelodySettings {
   piano: number;
   tower: number;
   beat: number;
+  reverse: number;
 }
 export const melodyDefaults: MelodySettings = {
   bpm: 108,
@@ -43,4 +44,5 @@ export const melodyDefaults: MelodySettings = {
   piano: 0.62,
   tower: 0.32,
   beat: 0.72,
+  reverse: 0.65,
 };
