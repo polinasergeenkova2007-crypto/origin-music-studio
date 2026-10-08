@@ -98,8 +98,6 @@ export class Sequencer {
       beat: active.has("beat") ? this.instruments.beat : undefined,
     };
     this.instruments.tone?.(energy, time);
-    if ((bar < 2 && position === 0) || ([3, 7, 11, 15].includes(bar) && position === 8))
-      this.instruments.breath?.(time, tick * (bar < 2 ? 12 : 8), bar < 2 ? 1.9 : 0.75);
     const rise = section.id === "rise";
     const drumGain =
       section.id === "intro" ? 0.7 : section.id === "return" ? 0.65 : 1;
