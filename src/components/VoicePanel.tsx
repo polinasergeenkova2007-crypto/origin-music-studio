@@ -1,3 +1,4 @@
+import { Knob } from "./Knob";
 import { ControlGroups } from "./ControlGroups";
 import type { VoiceSettings, VoiceId } from "../state/types";
 const controls: [keyof VoiceSettings, string, number, number, number][] = [
@@ -43,29 +44,107 @@ export function VoicePanel({
           "Удержание и затухание",
         ]}
       >
-        {controls.map(([key, label, min, max, step]) => (
-          <label key={key} className={["attack", "decay", "sustain", "release"].includes(key) ? "vertical-control" : undefined}>
-            <span>
-              <span className="sr-only">{label}</span>
-              <b>
-                {key === "filter"
-                  ? settings.filter + " Hz"
-                  : typeof settings[key] === "number"
-                    ? (settings[key] as number).toFixed(2)
-                    : ""}
-              </b>
-            </span>
-            <input
-              aria-label={id + " " + label.toLowerCase()}
-              type="range"
-              min={min}
-              max={max}
-              step={step}
-              value={settings[key]}
-              onChange={(e) => change({ ...settings, [key]: +e.target.value })}
-            />
-          </label>
-        ))}
+        {controls.map(([key, label, min, max, step]) => {
+          const name = id + " " + label.toLowerCase();
+          const value = settings[key] as number;
+          const update = (next: number) =>
+            change({ ...settings, [key]: Math.max(min, Math.min(max, next)) });
+          if (key === "attack" || key === "decay")
+            return (
+              <div className="envelope-knob" key={key}>
+                <Knob
+                  label={name}
+                  hideLabel
+                  value={value}
+                  min={min}
+                  max={max}
+                  step={step}
+                  displayValue={value.toFixed(2) + " с"}
+                  onChange={update}
+                />
+              </div>
+            );
+          if (key === "sustain")
+            return (
+              <div className="segment-control" key={key}>
+                <output>{Math.round(value * 100)}%</output>
+                <div className="segment-scale" role="group" aria-label={name}>
+                  {Array.from({ length: 11 }, (_, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      aria-label={name + " " + i * 10 + "%"}
+                      aria-pressed={Math.round(value * 10) === i}
+                      className={i <= value * 10 ? "lit" : ""}
+                      onClick={() => update(i / 10)}
+                    />
+                  ))}
+                </div>
+              </div>
+            );
+          if (key === "release")
+            return (
+              <div className="step-control" key={key}>
+                <input
+                  aria-label={name}
+                  type="number"
+                  min={min}
+                  max={max}
+                  step={step}
+                  value={Number(value.toFixed(2))}
+                  onChange={(e) => {
+                    if (
+                      e.target.value !== "" &&
+                      Number.isFinite(e.target.valueAsNumber)
+                    )
+                      update(e.target.valueAsNumber);
+                  }}
+                />
+                <span className="step-buttons">
+                  <button
+                    type="button"
+                    aria-label={name + " уменьшить"}
+                    onClick={() => update(Number((value - 0.1).toFixed(2)))}
+                  >
+                    −
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={name + " увеличить"}
+                    onClick={() => update(Number((value + 0.1).toFixed(2)))}
+                  >
+                    +
+                  </button>
+                </span>
+                <small>с</small>
+              </div>
+            );
+          return (
+            <label key={key}>
+              <span>
+                <span className="sr-only">{label}</span>
+                <b>
+                  {key === "filter"
+                    ? settings.filter + " Hz"
+                    : typeof settings[key] === "number"
+                      ? (settings[key] as number).toFixed(2)
+                      : ""}
+                </b>
+              </span>
+              <input
+                aria-label={id + " " + label.toLowerCase()}
+                type="range"
+                min={min}
+                max={max}
+                step={step}
+                value={settings[key]}
+                onChange={(e) =>
+                  change({ ...settings, [key]: +e.target.value })
+                }
+              />
+            </label>
+          );
+        })}
       </ControlGroups>
       <footer>
         {id === "body"

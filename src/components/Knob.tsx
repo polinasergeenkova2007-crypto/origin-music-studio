@@ -1,6 +1,8 @@
 import { useRef } from "react";
 export function Knob({
   label,
+  displayValue,
+  hideLabel = false,
   value,
   min = 0,
   max = 1,
@@ -8,6 +10,8 @@ export function Knob({
   onChange,
 }: {
   label: string;
+  displayValue?: string;
+  hideLabel?: boolean;
   value: number;
   min?: number;
   max?: number;
@@ -19,7 +23,7 @@ export function Knob({
     onChange(Math.max(min, Math.min(max, Math.round(next / step) * step)));
   return (
     <div className="knob-control">
-      <span>{label}</span>
+      <span className={hideLabel ? "sr-only" : undefined}>{label}</span>
       <button
         type="button"
         className="knob"
@@ -73,7 +77,9 @@ export function Knob({
       >
         <i />
       </button>
-      <output>{Math.round(((value - min) / (max - min)) * 100)}%</output>
+      <output>
+        {displayValue ?? Math.round(((value - min) / (max - min)) * 100) + "%"}
+      </output>
     </div>
   );
 }
