@@ -83,12 +83,8 @@ export default function App() {
       </header>
       <section className="intro">
         <div>
-          <p className="eyebrow">AFTERIMAGE</p>
-          <h1>
-            Мелодия на первом плане.
-            <br />
-            Мягкие клавиши и тёплый звон.
-          </h1>
+          <p className="eyebrow">ЭЛЕКТРОННЫЙ СИНТЕЗАТОР</p>
+          <h1>AFTERIMAGE</h1>
           <p className="description">
             Мягкое электропиано ведёт тему, колокольчики и два синтезатора
             создают движение.
@@ -180,6 +176,9 @@ export default function App() {
               ? "Исходная фраза"
               : "Вариация " + (melody.seed - 17)}
           </span>
+          <div className="signal-orbit" aria-hidden="true">
+            {[12,20,31,18,40,56,34,67,45,30,53,72,48,35,62,40,25,49,36,61,32,18,28,14].map((height,index)=><i key={index} style={{height}} />)}
+          </div>
           <h2>Тема, развитие и кульминация</h2>
           <p>
             Электропиано — мелодия. Колокольчики — акценты. BODY — ритм, GHOST —
@@ -318,7 +317,7 @@ export default function App() {
           ))}
         </div>
       </section>
-      <section className="melody-panel">
+      <section className="melody-panel instrument-panel">
         <h2>Бас и дополнительные звуки</h2>
         <div className="macro-grid">
           {(
