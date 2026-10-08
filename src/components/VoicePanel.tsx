@@ -146,6 +146,9 @@ export function VoicePanel({
           );
         })}
       </ControlGroups>
+      <div className="wave-buttons" role="group" aria-label={id+" форма волны"}>
+        {([{value:"sine",name:"Синус",icon:"∿"},{value:"triangle",name:"Треугольник",icon:"△"},{value:"sawtooth",name:"Пила",icon:"⋰"},{value:"square",name:"Прямоугольник",icon:"⊓"}] as const).map(w=><button key={w.value} aria-label={id+" "+w.name} aria-pressed={settings.waveform===w.value} onClick={()=>change({...settings,waveform:w.value})}><span aria-hidden="true">{w.icon}</span></button>)}
+      </div>
       <footer>
         {id === "body"
           ? "ДВА ОСЦИЛЛЯТОРА · −7 ЦЕНТОВ · САТУРАЦИЯ"
