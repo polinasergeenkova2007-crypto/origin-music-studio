@@ -45,6 +45,6 @@ export const melodyDefaults: MelodySettings = {
   piano: 0.52,
   tower: 0.85,
   beat: 0.72,
-  breath: 0.7,
+  breath: 0,
   reverse: 0,
 };
