@@ -84,11 +84,11 @@ export default function App() {
         </span>
       </section>
       <section className="transport">
-        <button className="play" disabled={starting} onClick={play}>
-          {playing ? "■ Остановить мелодию" : "▶ Слушать мелодию"}
+        <button className="play" aria-label={playing ? "Остановить мелодию" : "Слушать мелодию"} disabled={starting} onClick={play}>
+          {playing ? "■" : "▶"}
         </button>
-        <button className="stop" onClick={stop}>
-          ■ Стоп
+        <button className="stop" aria-label="Стоп" onClick={stop}>
+          ■
         </button>
         <label className="tempo">
           Темп{" "}
@@ -142,7 +142,7 @@ export default function App() {
               engine.current.setVolume(+e.target.value);
             }}
           />
-          <output>{Math.round((volume / 0.8) * 100)}%</output>
+          <output>{Math.round((volume / 0.8) * 100)}</output>
         </label>
       </section>
       {error && (
@@ -222,6 +222,7 @@ export default function App() {
         </ControlGroups>
         <button
           className="all-layers"
+          aria-label="Включить все слои"
           onClick={() =>
             changeMelody({
               ...melody,
@@ -241,7 +242,7 @@ export default function App() {
             })
           }
         >
-          Включить все слои
+          ⊕
         </button>
       </section>
     </main>
