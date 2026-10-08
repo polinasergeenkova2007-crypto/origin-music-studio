@@ -4,6 +4,12 @@ import { bellMelody, bellSteps } from "../../composition/bellMelody";
 
 import type { MelodySettings } from "../../state/melody";
 export interface Instruments {
+  beat?: (
+    kind: "kick" | "snare" | "hat",
+    time: number,
+    velocity: number,
+    open?: boolean,
+  ) => void;
   tower?: (note: number, time: number, velocity: number) => void;
   piano?: (
     note: number,
@@ -69,6 +75,32 @@ export class Sequencer {
       energy = energyAt(step),
       gain = 0.55 + energy * 0.45;
     this.instruments.tone?.(energy, time);
+    const rise = section.id === "rise";
+    const drumGain =
+      section.id === "intro" ? 0.7 : section.id === "return" ? 0.65 : 1;
+    if ([0, 8, 10].includes(position) || (rise && [6, 14].includes(position)))
+      this.instruments.beat?.(
+        "kick",
+        time,
+        drumGain * (position === 0 || position === 8 ? 1 : 0.8),
+      );
+    if (
+      [4, 12].includes(position) ||
+      (rise && bar % 4 === 3 && [14, 15].includes(position))
+    )
+      this.instruments.beat?.(
+        "snare",
+        time,
+        drumGain * (position === 15 ? 0.6 : 1),
+      );
+    if (position % 2 === 0 || (rise && position >= 12))
+      this.instruments.beat?.(
+        "hat",
+        time,
+        drumGain * (position % 4 === 2 ? 0.85 : 0.5),
+        position === 14,
+      );
+
     // Nabat announces phrase boundaries; the rise adds an answering strike.
     if (
       (position === 0 && bar % 4 === 0) ||
