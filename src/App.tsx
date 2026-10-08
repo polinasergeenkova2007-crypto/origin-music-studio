@@ -87,10 +87,10 @@ export default function App() {
           <h1>
             Мелодия на первом плане.
             <br />
-            Мягкие струны и тёплый звон.
+            Мягкие клавиши и тёплый звон.
           </h1>
           <p className="description">
-            Электронная арфа ведёт тему, колокольчики и два синтезатора
+            Мягкое электропиано ведёт тему, колокольчики и два синтезатора
             создают движение.
             <br />
             Нажмите «Слушать» — мелодия начнёт играть сама.
@@ -182,7 +182,7 @@ export default function App() {
           </span>
           <h2>Тема, развитие и кульминация</h2>
           <p>
-            Арфа — мелодия. Колокольчики — акценты. BODY — ритм, GHOST —
+            Электропиано — мелодия. Колокольчики — акценты. BODY — ритм, GHOST —
             второй голос. Бас, стекло и шум добавляют глубину и акценты.
           </p>
         </div>
@@ -247,7 +247,7 @@ export default function App() {
         <div className="part-roles">
           <span>BODY · ритмическая партия</span>
           <span>GHOST · второй голос</span>
-          <span>HARP · главная мелодия</span>
+          <span>PIANO · главная мелодия</span>
         </div>
       </section>
       <MelodyControls settings={melody} change={changeMelody} />
@@ -302,8 +302,6 @@ export default function App() {
                       piano: 0,
                       tower: 0,
                       beat: 0,
-                      breath: 0,
-                      reverse: 0,
                       [id]: 1,
                     })
                   }
@@ -327,8 +325,8 @@ export default function App() {
             [
               {
                 key: "beat",
-                name: "Глухой пульс",
-                description: "Низкий удар, полый корпус и сухие шумовые шорохи",
+                name: "Тяжёлый бит",
+                description: "Глубокая бочка, резкий снейр и яркие хай-хэты",
               },
               {
                 key: "tower",
@@ -338,8 +336,8 @@ export default function App() {
               },
               {
                 key: "piano",
-                name: "Электронная арфа",
-                description: "Щипковая тема с мягким струнным резонансом",
+                name: "Войлочное электропиано",
+                description: "Мягкая основная тема с округлой атакой",
               },
               {
                 key: "bow",
@@ -421,8 +419,6 @@ export default function App() {
               piano: melodyDefaults.piano,
               tower: melodyDefaults.tower,
               beat: melodyDefaults.beat,
-              breath: melodyDefaults.breath,
-              reverse: melodyDefaults.reverse,
             })
           }
         >
