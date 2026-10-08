@@ -129,7 +129,7 @@ export default function App() {
           <span>BPM</span>
         </label>
         <label className="master-volume">
-          Громкость{" "}
+          <span className="sr-only">Громкость</span>{" "}
           <input
             aria-label="Общая громкость"
             type="range"
