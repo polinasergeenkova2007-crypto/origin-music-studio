@@ -301,6 +301,7 @@ export default function App() {
                       bow: 0,
                       piano: 0,
                       tower: 0,
+                      beat: 0,
                       [id]: 1,
                     })
                   }
@@ -322,6 +323,11 @@ export default function App() {
         <div className="macro-grid">
           {(
             [
+              {
+                key: "beat",
+                name: "Тяжёлый бит",
+                description: "Глубокая бочка, резкий снейр и яркие хай-хэты",
+              },
               {
                 key: "tower",
                 name: "Большой колокол · набат",
@@ -412,6 +418,7 @@ export default function App() {
               bow: melodyDefaults.bow,
               piano: melodyDefaults.piano,
               tower: melodyDefaults.tower,
+              beat: melodyDefaults.beat,
             })
           }
         >
