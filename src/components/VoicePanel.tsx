@@ -44,7 +44,7 @@ export function VoicePanel({
         ]}
       >
         {controls.map(([key, label, min, max, step]) => (
-          <label key={key}>
+          <label key={key} className={["attack", "decay", "sustain", "release"].includes(key) ? "vertical-control" : undefined}>
             <span>
               <span className="sr-only">{label}</span>
               <b>
