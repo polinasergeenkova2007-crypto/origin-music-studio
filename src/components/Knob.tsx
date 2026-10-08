@@ -78,7 +78,7 @@ export function Knob({
         <i />
       </button>
       <output>
-        {displayValue ?? Math.round(((value - min) / (max - min)) * 100) + "%"}
+        {displayValue ?? Math.round(((value - min) / (max - min)) * 100)}
       </output>
     </div>
   );

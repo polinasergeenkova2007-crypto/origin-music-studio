@@ -59,7 +59,7 @@ export function VoicePanel({
                   min={min}
                   max={max}
                   step={step}
-                  displayValue={value.toFixed(2) + " с"}
+                  displayValue={value.toFixed(2)}
                   onChange={update}
                 />
               </div>
@@ -67,7 +67,7 @@ export function VoicePanel({
           if (key === "sustain")
             return (
               <div className="segment-control" key={key}>
-                <output>{Math.round(value * 100)}%</output>
+                <output>{Math.round(value * 100)}</output>
                 <div className="segment-scale" role="group" aria-label={name}>
                   {Array.from({ length: 11 }, (_, i) => (
                     <button
@@ -125,7 +125,7 @@ export function VoicePanel({
                 <span className="sr-only">{label}</span>
                 <b>
                   {key === "filter"
-                    ? settings.filter + " Hz"
+                    ? settings.filter
                     : typeof settings[key] === "number"
                       ? (settings[key] as number).toFixed(2)
                       : ""}

@@ -58,8 +58,8 @@ export function MelodyControls({
               <span className="sr-only">{c.label}</span>
               <output>
                 {c.key === "tail"
-                  ? settings[c.key].toFixed(1) + " с"
-                  : Math.round(settings[c.key] * 100) + "%"}
+                  ? settings[c.key].toFixed(1)
+                  : Math.round(settings[c.key] * 100)}
               </output>
             </div>
             <input
