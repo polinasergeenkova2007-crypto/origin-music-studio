@@ -2,7 +2,7 @@ import { ReverseMetalSynth } from "../modules/ReverseMetalSynth";
 import { BeatSynth } from "../modules/BeatSynth";
 import { TowerBellSynth } from "../modules/TowerBellSynth";
 import { BowedGlassSynth } from "../modules/BowedGlassSynth";
-import { FeltPianoSynth } from "../modules/FeltPianoSynth";
+import { ElectronicHarpSynth } from "../modules/ElectronicHarpSynth";
 import { PadSynth } from "../modules/PadSynth";
 import { PluckSynth } from "../modules/PluckSynth";
 import { MachineSynth } from "../modules/MachineSynth";
@@ -28,7 +28,7 @@ export class AudioEngine {
   private noise?: NoiseSynth;
   private pad?: PadSynth;
   private bow?: BowedGlassSynth;
-  private piano?: FeltPianoSynth;
+  private piano?: ElectronicHarpSynth;
   private pluck?: PluckSynth;
   private machine?: MachineSynth;
   private beat?: BeatSynth;
@@ -101,13 +101,13 @@ export class AudioEngine {
         volume: this.melody.bow,
         pan: -0.25,
       });
-      this.piano = new FeltPianoSynth(this.context, this.master.input, {
+      this.piano = new ElectronicHarpSynth(this.context, this.master.input, {
         ...defaults.ghost,
-        attack: 0.012,
-        decay: 0.24,
-        sustain: 0.12,
-        release: 0.32,
-        filter: 2200,
+        attack: 0.006,
+        decay: 0.18,
+        sustain: 0.04,
+        release: 0.65,
+        filter: 3200,
         volume: this.melody.piano,
         pan: -0.08,
       });
