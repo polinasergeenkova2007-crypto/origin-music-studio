@@ -1,3 +1,4 @@
+import { ControlGroups } from "./ControlGroups";
 import type { VoiceSettings, VoiceId } from "../state/types";
 const controls: [keyof VoiceSettings, string, number, number, number][] = [
   ["volume", "Громкость", 0, 1, 0.01],
@@ -51,7 +52,7 @@ export function VoicePanel({
           {id === "body" ? "╱╲╱╲╱╲╱╲" : "∿ ∿ ∿ ∿"}
         </span>
       </div>
-      <div className="controls">
+      <ControlGroups titles={["Уровень и фильтр", "Резонанс и панорама", "Атака и спад", "Удержание и затухание"]}>
         {controls.map(([key, label, min, max, step]) => (
           <label key={key}>
             <span>
@@ -75,7 +76,7 @@ export function VoicePanel({
             />
           </label>
         ))}
-      </div>
+      </ControlGroups>
       <footer>
         {id === "body"
           ? "ДВА ОСЦИЛЛЯТОРА · −7 ЦЕНТОВ · САТУРАЦИЯ"

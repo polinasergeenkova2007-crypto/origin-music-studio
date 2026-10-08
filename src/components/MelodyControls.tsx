@@ -1,3 +1,4 @@
+import { ControlGroups } from "./ControlGroups";
 import type { MelodySettings } from "../state/melody";
 const controls: {
   key: keyof MelodySettings;
@@ -39,22 +40,6 @@ const controls: {
     max: 1,
     step: 0.01,
   },
-  {
-    key: "tail",
-    label: "Послезвучие",
-    description: "Как долго звенит каждая нота",
-    min: 0.8,
-    max: 6,
-    step: 0.1,
-  },
-  {
-    key: "shimmer",
-    label: "Металлический блеск",
-    description: "Добавляет тонкие верхние обертоны",
-    min: 0,
-    max: 1,
-    step: 0.01,
-  },
 ];
 export function MelodyControls({
   settings,
@@ -66,7 +51,7 @@ export function MelodyControls({
   return (
     <section className="melody-panel">
       <h2>Характер звучания</h2>
-      <div className="macro-grid">
+      <ControlGroups titles={["Рисунок и мягкость", "Пространство и эхо"]}>
         {controls.map((c) => (
           <label key={c.key}>
             <div className="control-title">
@@ -91,7 +76,7 @@ export function MelodyControls({
             <small>{c.description}</small>
           </label>
         ))}
-      </div>
+      </ControlGroups>
     </section>
   );
 }
