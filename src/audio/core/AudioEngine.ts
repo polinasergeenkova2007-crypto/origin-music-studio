@@ -1,3 +1,4 @@
+import { BreathSynth } from "../modules/BreathSynth";
 import { ReverseMetalSynth } from "../modules/ReverseMetalSynth";
 import { BeatSynth } from "../modules/BeatSynth";
 import { TowerBellSynth } from "../modules/TowerBellSynth";
@@ -32,6 +33,7 @@ export class AudioEngine {
   private pluck?: PluckSynth;
   private machine?: MachineSynth;
   private beat?: BeatSynth;
+  private breath?: BreathSynth;
   private reverse?: ReverseMetalSynth;
   private voiceSettings = { ...defaults };
   private scheduler?: AudioScheduler;
@@ -70,6 +72,7 @@ export class AudioEngine {
         space: 0.8,
         echo: 0.12,
       });
+      this.breath = new BreathSynth(this.context, this.master.input);
       this.noise = new NoiseSynth(this.context, this.master.input);
       this.pad = new PadSynth(this.context, this.master.input, {
         ...defaults.ghost,
@@ -117,6 +120,7 @@ export class AudioEngine {
       const seq = new Sequencer(() => this.melody, {
         tone: (energy, time) => this.automateTone(energy, time),
         reverse: (t, d, f) => this.reverse!.play(t, d, f),
+        breath: (t, d, v) => this.breath!.breathe(t, d, v),
         tower: (n, t, v) => this.tower!.play(n, t, v, 0.08),
         chime: (n, t, v, p) => this.chime!.play(n, t, v, p),
         body: (n, t, d, v, release) =>
@@ -183,6 +187,7 @@ export class AudioEngine {
     this.pluck?.setVolume(settings.pluck);
     this.machine?.setVolume(settings.machine);
     this.beat?.setVolume(settings.beat);
+    this.breath?.setVolume(settings.breath);
     this.reverse?.setVolume(settings.reverse);
     if (this.voices) {
       this.update("body", this.voiceSettings.body);
@@ -248,6 +253,7 @@ export class AudioEngine {
     this.piano?.stop();
     this.pluck?.stop();
     this.reverse?.stop();
+    this.breath?.stop();
     this.beat?.stop();
     this.machine?.stop();
     this.updateMelody(this.melody);
@@ -275,6 +281,7 @@ export class AudioEngine {
       (this.piano?.activeCount ?? 0) +
       (this.pluck?.activeCount ?? 0) +
       (this.reverse?.activeCount ?? 0) +
+      (this.breath?.activeCount ?? 0) +
       (this.beat?.activeCount ?? 0) +
       (this.machine?.activeCount ?? 0)
     );
@@ -293,6 +300,7 @@ export class AudioEngine {
     this.piano?.dispose();
     this.pluck?.dispose();
     this.reverse?.dispose();
+    this.breath?.dispose();
     this.beat?.dispose();
     this.machine?.dispose();
     if (this.context) {
@@ -313,6 +321,7 @@ export class AudioEngine {
     this.piano = undefined;
     this.pluck = undefined;
     this.reverse = undefined;
+    this.breath = undefined;
     this.beat = undefined;
     this.machine = undefined;
     this.scheduler = undefined;
