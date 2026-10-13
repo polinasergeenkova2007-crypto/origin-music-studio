@@ -2,12 +2,1430 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ORIGIN · Нежные колокольчики</title>
-    <script type="module" crossorigin src="/origin-music-studio/assets/index-Dq2Q07TU.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Музыкальный синтезатор</title>
+    <script type="module" crossorigin src="/origin-music-studio/assets/index-CcS4bR-q.js"></script>
     <link rel="stylesheet" crossorigin href="/origin-music-studio/assets/index-C9CETwhQ.css">
   </head>
   <body>
-    <div id="root"></div>
+    <main>
+      <section class="intro">
+        <div>
+          <p class="eyebrow">ЭЛЕКТРОННЫЙ СИНТЕЗАТОР</p>
+          <h1>AFTERIMAGE</h1>
+          <p class="description">
+            Мягкое электропиано ведёт тему, колокольчики и два синтезатора
+            создают движение.<br />Нажмите «Слушать» — мелодия начнёт играть
+            сама.
+          </p>
+        </div>
+        <span class="status">Готово к воспроизведению</span>
+      </section>
+      <section class="transport">
+        <button class="play" aria-label="Слушать мелодию">▶</button
+        ><button class="stop" aria-label="Стоп">■</button
+        ><label class="tempo"
+          >Темп
+          <input
+            aria-label="Темп"
+            type="number"
+            min="55"
+            max="130"
+            value="108"
+          /><span>BPM</span></label
+        ><label class="master-volume"
+          ><span class="sr-only">Громкость</span>
+          <input
+            aria-label="Общая громкость"
+            type="range"
+            min="0"
+            max="0.8"
+            step="0.01"
+            value="0.65"
+          /><output>81</output></label
+        >
+      </section>
+      <section class="melody-panel">
+        <h2>Характер звучания</h2>
+        <div class="control-groups">
+          <fieldset class="control-group">
+            <legend>Рисунок и мягкость</legend>
+            <div class="group-controls">
+              <label
+                ><div class="control-title">
+                  <span class="sr-only">Плотность</span><output>58</output>
+                </div>
+                <input
+                  aria-label="Плотность"
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value="0.58"
+                /><small
+                  >Добавляет украшения внутри фраз, сохраняя паузы</small
+                ></label
+              ><label
+                ><div class="control-title">
+                  <span class="sr-only">Мягкость</span><output>72</output>
+                </div>
+                <input
+                  aria-label="Мягкость"
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value="0.72"
+                /><small>Приглушает атаку и высокие частоты</small></label
+              >
+            </div>
+          </fieldset>
+          <fieldset class="control-group">
+            <legend>Пространство и эхо</legend>
+            <div class="group-controls">
+              <label
+                ><div class="control-title">
+                  <span class="sr-only">Пространство</span><output>42</output>
+                </div>
+                <input
+                  aria-label="Пространство"
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value="0.42"
+                /><small>Длинное отражение колокольчиков</small></label
+              ><label
+                ><div class="control-title">
+                  <span class="sr-only">Эхо</span><output>18</output>
+                </div>
+                <input
+                  aria-label="Эхо"
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value="0.18"
+                /><small>Тихие повторы в ритме мелодии</small></label
+              >
+            </div>
+          </fieldset>
+        </div>
+      </section>
+      <section class="primary-voices">
+        <h2>Два основных синтезатора</h2>
+        <p class="section-hint">
+          Громкость, фильтр, панорама меняют текущий звук. ADSR применяется к
+          следующим нотам.
+        </p>
+        <div class="voices">
+          <div>
+            <section class="voice body">
+              <div class="voice-heading">
+                <span class="index">01</span>
+                <div>
+                  <h2>BODY</h2>
+                  <p>Низкий, тёплый голос.</p>
+                </div>
+                <span class="tag">ДВА ГОЛОСА</span>
+              </div>
+              <div class="control-groups">
+                <fieldset class="control-group">
+                  <legend>Уровень и фильтр</legend>
+                  <div class="group-controls">
+                    <label
+                      ><span
+                        ><span class="sr-only">Громкость</span><b>0.45</b></span
+                      ><input
+                        aria-label="body громкость"
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        value="0.45" /></label
+                    ><label
+                      ><span><span class="sr-only">Фильтр</span><b>650</b></span
+                      ><input
+                        aria-label="body фильтр"
+                        type="range"
+                        min="80"
+                        max="10000"
+                        step="10"
+                        value="650"
+                    /></label>
+                  </div>
+                </fieldset>
+                <fieldset class="control-group">
+                  <legend>Резонанс и панорама</legend>
+                  <div class="group-controls">
+                    <label
+                      ><span
+                        ><span class="sr-only">Резонанс</span><b>1.20</b></span
+                      ><input
+                        aria-label="body резонанс"
+                        type="range"
+                        min="0.1"
+                        max="8"
+                        step="0.1"
+                        value="1.2" /></label
+                    ><label
+                      ><span
+                        ><span class="sr-only">Панорама</span><b>-0.12</b></span
+                      ><input
+                        aria-label="body панорама"
+                        type="range"
+                        min="-1"
+                        max="1"
+                        step="0.01"
+                        value="-0.12"
+                    /></label>
+                  </div>
+                </fieldset>
+                <fieldset class="control-group">
+                  <legend>Атака и спад</legend>
+                  <div class="group-controls">
+                    <div class="envelope-knob">
+                      <div
+                        class="knob-control"
+                        style="--knob-angle: -133.19699499165276deg"
+                      >
+                        <div class="knob-dial" aria-hidden="true">
+                          <svg viewBox="0 0 100 100">
+                            <rect
+                              x="14.594408408978456"
+                              y="77.40559159102153"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-135,19.594408408978456,80.40559159102153)"
+                              fill="#ef9995"
+                            ></rect>
+                            <rect
+                              x="6.686719459900182"
+                              y="66.52159148880051"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-117,11.686719459900182,69.52159148880051)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="2.5294013544090816"
+                              y="53.72668199672994"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-99,7.529401354409082,56.72668199672994)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="2.5294013544090745"
+                              y="40.27331800327007"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-81,7.5294013544090745,43.27331800327007)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="6.686719459900182"
+                              y="27.478408511199486"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-63,11.686719459900182,30.478408511199486)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="14.59440840897846"
+                              y="16.594408408978456"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-45,19.59440840897846,19.594408408978456)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="25.478408511199486"
+                              y="8.686719459900182"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-27,30.478408511199486,11.686719459900182)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="38.27331800327007"
+                              y="4.5294013544090745"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-9,43.27331800327007,7.5294013544090745)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="51.72668199672993"
+                              y="4.5294013544090745"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(9,56.72668199672993,7.5294013544090745)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="64.52159148880051"
+                              y="8.686719459900182"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(27,69.52159148880051,11.686719459900182)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="75.40559159102153"
+                              y="16.594408408978456"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(45,80.40559159102153,19.594408408978456)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="83.31328054009981"
+                              y="27.478408511199486"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(63,88.31328054009981,30.478408511199486)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="87.47059864559093"
+                              y="40.27331800327007"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(81,92.47059864559093,43.27331800327007)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="87.47059864559091"
+                              y="53.72668199672994"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(99,92.47059864559091,56.72668199672994)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="83.31328054009981"
+                              y="66.52159148880051"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(117,88.31328054009981,69.52159148880051)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="75.40559159102155"
+                              y="77.40559159102153"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(135,80.40559159102155,80.40559159102153)"
+                              fill="#edbab5"
+                            ></rect></svg
+                          ><b>▸</b>
+                        </div>
+                        <span class="sr-only">body атака</span
+                        ><button
+                          type="button"
+                          class="knob"
+                          role="slider"
+                          aria-label="body атака"
+                          aria-valuemin="0.005"
+                          aria-valuemax="3"
+                          aria-valuenow="0.025"
+                          style="transform: rotate(-133.19699499165276deg)"
+                        >
+                          <i></i></button
+                        ><output>0.03</output>
+                      </div>
+                    </div>
+                    <div class="envelope-knob">
+                      <div
+                        class="knob-control"
+                        style="--knob-angle: -108.81270903010034deg"
+                      >
+                        <div class="knob-dial" aria-hidden="true">
+                          <svg viewBox="0 0 100 100">
+                            <rect
+                              x="14.594408408978456"
+                              y="77.40559159102153"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-135,19.594408408978456,80.40559159102153)"
+                              fill="#ef9995"
+                            ></rect>
+                            <rect
+                              x="6.686719459900182"
+                              y="66.52159148880051"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-117,11.686719459900182,69.52159148880051)"
+                              fill="#ef9995"
+                            ></rect>
+                            <rect
+                              x="2.5294013544090816"
+                              y="53.72668199672994"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-99,7.529401354409082,56.72668199672994)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="2.5294013544090745"
+                              y="40.27331800327007"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-81,7.5294013544090745,43.27331800327007)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="6.686719459900182"
+                              y="27.478408511199486"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-63,11.686719459900182,30.478408511199486)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="14.59440840897846"
+                              y="16.594408408978456"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-45,19.59440840897846,19.594408408978456)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="25.478408511199486"
+                              y="8.686719459900182"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-27,30.478408511199486,11.686719459900182)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="38.27331800327007"
+                              y="4.5294013544090745"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-9,43.27331800327007,7.5294013544090745)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="51.72668199672993"
+                              y="4.5294013544090745"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(9,56.72668199672993,7.5294013544090745)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="64.52159148880051"
+                              y="8.686719459900182"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(27,69.52159148880051,11.686719459900182)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="75.40559159102153"
+                              y="16.594408408978456"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(45,80.40559159102153,19.594408408978456)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="83.31328054009981"
+                              y="27.478408511199486"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(63,88.31328054009981,30.478408511199486)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="87.47059864559093"
+                              y="40.27331800327007"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(81,92.47059864559093,43.27331800327007)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="87.47059864559091"
+                              y="53.72668199672994"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(99,92.47059864559091,56.72668199672994)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="83.31328054009981"
+                              y="66.52159148880051"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(117,88.31328054009981,69.52159148880051)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="75.40559159102155"
+                              y="77.40559159102153"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(135,80.40559159102155,80.40559159102153)"
+                              fill="#edbab5"
+                            ></rect></svg
+                          ><b>▸</b>
+                        </div>
+                        <span class="sr-only">body спад</span
+                        ><button
+                          type="button"
+                          class="knob"
+                          role="slider"
+                          aria-label="body спад"
+                          aria-valuemin="0.01"
+                          aria-valuemax="3"
+                          aria-valuenow="0.3"
+                          style="transform: rotate(-108.81270903010034deg)"
+                        >
+                          <i></i></button
+                        ><output>0.30</output>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <fieldset class="control-group">
+                  <legend>Удержание и затухание</legend>
+                  <div class="group-controls">
+                    <div class="segment-control">
+                      <output>70</output>
+                      <div
+                        class="segment-scale"
+                        role="group"
+                        aria-label="body удержание"
+                      >
+                        <button
+                          type="button"
+                          aria-label="body удержание 0%"
+                          aria-pressed="false"
+                          class="lit"
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="body удержание 10%"
+                          aria-pressed="false"
+                          class="lit"
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="body удержание 20%"
+                          aria-pressed="false"
+                          class="lit"
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="body удержание 30%"
+                          aria-pressed="false"
+                          class="lit"
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="body удержание 40%"
+                          aria-pressed="false"
+                          class="lit"
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="body удержание 50%"
+                          aria-pressed="false"
+                          class="lit"
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="body удержание 60%"
+                          aria-pressed="false"
+                          class="lit"
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="body удержание 70%"
+                          aria-pressed="true"
+                          class="lit"
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="body удержание 80%"
+                          aria-pressed="false"
+                          class=""
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="body удержание 90%"
+                          aria-pressed="false"
+                          class=""
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="body удержание 100%"
+                          aria-pressed="false"
+                          class=""
+                        ></button>
+                      </div>
+                    </div>
+                    <div class="step-control">
+                      <input
+                        aria-label="body затухание"
+                        type="number"
+                        min="0.02"
+                        max="5"
+                        step="0.01"
+                        value="0.22"
+                      /><span class="step-buttons"
+                        ><button
+                          type="button"
+                          aria-label="body затухание уменьшить"
+                        >
+                          −</button
+                        ><button
+                          type="button"
+                          aria-label="body затухание увеличить"
+                        >
+                          +
+                        </button></span
+                      ><small>с</small>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div
+                class="wave-buttons"
+                role="group"
+                aria-label="body форма волны"
+              >
+                <button aria-label="body Синус" aria-pressed="false">
+                  <span aria-hidden="true">∿</span></button
+                ><button aria-label="body Треугольник" aria-pressed="false">
+                  <span aria-hidden="true">△</span></button
+                ><button aria-label="body Пила" aria-pressed="true">
+                  <span aria-hidden="true">⋰</span></button
+                ><button aria-label="body Прямоугольник" aria-pressed="false">
+                  <span aria-hidden="true">⊓</span>
+                </button>
+              </div>
+              <footer>ДВА ОСЦИЛЛЯТОРА · −7 ЦЕНТОВ · САТУРАЦИЯ</footer>
+            </section>
+          </div>
+          <div>
+            <section class="voice ghost">
+              <div class="voice-heading">
+                <span class="index">02</span>
+                <div>
+                  <h2>GHOST</h2>
+                  <p>Мягкий синусовый голос без дрейфа.</p>
+                </div>
+                <span class="tag">МЯГКИЙ СИНУС</span>
+              </div>
+              <div class="control-groups">
+                <fieldset class="control-group">
+                  <legend>Уровень и фильтр</legend>
+                  <div class="group-controls">
+                    <label
+                      ><span
+                        ><span class="sr-only">Громкость</span><b>0.26</b></span
+                      ><input
+                        aria-label="ghost громкость"
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        value="0.26" /></label
+                    ><label
+                      ><span
+                        ><span class="sr-only">Фильтр</span><b>1400</b></span
+                      ><input
+                        aria-label="ghost фильтр"
+                        type="range"
+                        min="80"
+                        max="10000"
+                        step="10"
+                        value="1400"
+                    /></label>
+                  </div>
+                </fieldset>
+                <fieldset class="control-group">
+                  <legend>Резонанс и панорама</legend>
+                  <div class="group-controls">
+                    <label
+                      ><span
+                        ><span class="sr-only">Резонанс</span><b>0.50</b></span
+                      ><input
+                        aria-label="ghost резонанс"
+                        type="range"
+                        min="0.1"
+                        max="8"
+                        step="0.1"
+                        value="0.5" /></label
+                    ><label
+                      ><span
+                        ><span class="sr-only">Панорама</span><b>0.18</b></span
+                      ><input
+                        aria-label="ghost панорама"
+                        type="range"
+                        min="-1"
+                        max="1"
+                        step="0.01"
+                        value="0.18"
+                    /></label>
+                  </div>
+                </fieldset>
+                <fieldset class="control-group">
+                  <legend>Атака и спад</legend>
+                  <div class="group-controls">
+                    <div class="envelope-knob">
+                      <div
+                        class="knob-control"
+                        style="--knob-angle: -129.14023372287144deg"
+                      >
+                        <div class="knob-dial" aria-hidden="true">
+                          <svg viewBox="0 0 100 100">
+                            <rect
+                              x="14.594408408978456"
+                              y="77.40559159102153"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-135,19.594408408978456,80.40559159102153)"
+                              fill="#ef9995"
+                            ></rect>
+                            <rect
+                              x="6.686719459900182"
+                              y="66.52159148880051"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-117,11.686719459900182,69.52159148880051)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="2.5294013544090816"
+                              y="53.72668199672994"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-99,7.529401354409082,56.72668199672994)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="2.5294013544090745"
+                              y="40.27331800327007"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-81,7.5294013544090745,43.27331800327007)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="6.686719459900182"
+                              y="27.478408511199486"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-63,11.686719459900182,30.478408511199486)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="14.59440840897846"
+                              y="16.594408408978456"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-45,19.59440840897846,19.594408408978456)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="25.478408511199486"
+                              y="8.686719459900182"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-27,30.478408511199486,11.686719459900182)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="38.27331800327007"
+                              y="4.5294013544090745"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-9,43.27331800327007,7.5294013544090745)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="51.72668199672993"
+                              y="4.5294013544090745"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(9,56.72668199672993,7.5294013544090745)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="64.52159148880051"
+                              y="8.686719459900182"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(27,69.52159148880051,11.686719459900182)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="75.40559159102153"
+                              y="16.594408408978456"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(45,80.40559159102153,19.594408408978456)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="83.31328054009981"
+                              y="27.478408511199486"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(63,88.31328054009981,30.478408511199486)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="87.47059864559093"
+                              y="40.27331800327007"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(81,92.47059864559093,43.27331800327007)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="87.47059864559091"
+                              y="53.72668199672994"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(99,92.47059864559091,56.72668199672994)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="83.31328054009981"
+                              y="66.52159148880051"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(117,88.31328054009981,69.52159148880051)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="75.40559159102155"
+                              y="77.40559159102153"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(135,80.40559159102155,80.40559159102153)"
+                              fill="#edbab5"
+                            ></rect></svg
+                          ><b>▸</b>
+                        </div>
+                        <span class="sr-only">ghost атака</span
+                        ><button
+                          type="button"
+                          class="knob"
+                          role="slider"
+                          aria-label="ghost атака"
+                          aria-valuemin="0.005"
+                          aria-valuemax="3"
+                          aria-valuenow="0.07"
+                          style="transform: rotate(-129.14023372287144deg)"
+                        >
+                          <i></i></button
+                        ><output>0.07</output>
+                      </div>
+                    </div>
+                    <div class="envelope-knob">
+                      <div
+                        class="knob-control"
+                        style="--knob-angle: -99.78260869565217deg"
+                      >
+                        <div class="knob-dial" aria-hidden="true">
+                          <svg viewBox="0 0 100 100">
+                            <rect
+                              x="14.594408408978456"
+                              y="77.40559159102153"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-135,19.594408408978456,80.40559159102153)"
+                              fill="#ef9995"
+                            ></rect>
+                            <rect
+                              x="6.686719459900182"
+                              y="66.52159148880051"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-117,11.686719459900182,69.52159148880051)"
+                              fill="#ef9995"
+                            ></rect>
+                            <rect
+                              x="2.5294013544090816"
+                              y="53.72668199672994"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-99,7.529401354409082,56.72668199672994)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="2.5294013544090745"
+                              y="40.27331800327007"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-81,7.5294013544090745,43.27331800327007)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="6.686719459900182"
+                              y="27.478408511199486"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-63,11.686719459900182,30.478408511199486)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="14.59440840897846"
+                              y="16.594408408978456"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-45,19.59440840897846,19.594408408978456)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="25.478408511199486"
+                              y="8.686719459900182"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-27,30.478408511199486,11.686719459900182)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="38.27331800327007"
+                              y="4.5294013544090745"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(-9,43.27331800327007,7.5294013544090745)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="51.72668199672993"
+                              y="4.5294013544090745"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(9,56.72668199672993,7.5294013544090745)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="64.52159148880051"
+                              y="8.686719459900182"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(27,69.52159148880051,11.686719459900182)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="75.40559159102153"
+                              y="16.594408408978456"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(45,80.40559159102153,19.594408408978456)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="83.31328054009981"
+                              y="27.478408511199486"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(63,88.31328054009981,30.478408511199486)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="87.47059864559093"
+                              y="40.27331800327007"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(81,92.47059864559093,43.27331800327007)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="87.47059864559091"
+                              y="53.72668199672994"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(99,92.47059864559091,56.72668199672994)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="83.31328054009981"
+                              y="66.52159148880051"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(117,88.31328054009981,69.52159148880051)"
+                              fill="#edbab5"
+                            ></rect>
+                            <rect
+                              x="75.40559159102155"
+                              y="77.40559159102153"
+                              width="10"
+                              height="6"
+                              rx=".6"
+                              transform="rotate(135,80.40559159102155,80.40559159102153)"
+                              fill="#edbab5"
+                            ></rect></svg
+                          ><b>▸</b>
+                        </div>
+                        <span class="sr-only">ghost спад</span
+                        ><button
+                          type="button"
+                          class="knob"
+                          role="slider"
+                          aria-label="ghost спад"
+                          aria-valuemin="0.01"
+                          aria-valuemax="3"
+                          aria-valuenow="0.4"
+                          style="transform: rotate(-99.78260869565217deg)"
+                        >
+                          <i></i></button
+                        ><output>0.40</output>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+                <fieldset class="control-group">
+                  <legend>Удержание и затухание</legend>
+                  <div class="group-controls">
+                    <div class="segment-control">
+                      <output>45</output>
+                      <div
+                        class="segment-scale"
+                        role="group"
+                        aria-label="ghost удержание"
+                      >
+                        <button
+                          type="button"
+                          aria-label="ghost удержание 0%"
+                          aria-pressed="false"
+                          class="lit"
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="ghost удержание 10%"
+                          aria-pressed="false"
+                          class="lit"
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="ghost удержание 20%"
+                          aria-pressed="false"
+                          class="lit"
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="ghost удержание 30%"
+                          aria-pressed="false"
+                          class="lit"
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="ghost удержание 40%"
+                          aria-pressed="false"
+                          class="lit"
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="ghost удержание 50%"
+                          aria-pressed="true"
+                          class=""
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="ghost удержание 60%"
+                          aria-pressed="false"
+                          class=""
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="ghost удержание 70%"
+                          aria-pressed="false"
+                          class=""
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="ghost удержание 80%"
+                          aria-pressed="false"
+                          class=""
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="ghost удержание 90%"
+                          aria-pressed="false"
+                          class=""
+                        ></button
+                        ><button
+                          type="button"
+                          aria-label="ghost удержание 100%"
+                          aria-pressed="false"
+                          class=""
+                        ></button>
+                      </div>
+                    </div>
+                    <div class="step-control">
+                      <input
+                        aria-label="ghost затухание"
+                        type="number"
+                        min="0.02"
+                        max="5"
+                        step="0.01"
+                        value="0.4"
+                      /><span class="step-buttons"
+                        ><button
+                          type="button"
+                          aria-label="ghost затухание уменьшить"
+                        >
+                          −</button
+                        ><button
+                          type="button"
+                          aria-label="ghost затухание увеличить"
+                        >
+                          +
+                        </button></span
+                      ><small>с</small>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div
+                class="wave-buttons"
+                role="group"
+                aria-label="ghost форма волны"
+              >
+                <button aria-label="ghost Синус" aria-pressed="true">
+                  <span aria-hidden="true">∿</span></button
+                ><button aria-label="ghost Треугольник" aria-pressed="false">
+                  <span aria-hidden="true">△</span></button
+                ><button aria-label="ghost Пила" aria-pressed="false">
+                  <span aria-hidden="true">⋰</span></button
+                ><button aria-label="ghost Прямоугольник" aria-pressed="false">
+                  <span aria-hidden="true">⊓</span>
+                </button>
+              </div>
+              <footer>СИНУС · МЯГКАЯ ОКТАВА · БЕЗ ВИБРАТО</footer>
+            </section>
+          </div>
+        </div>
+      </section>
+      <section class="melody-panel instrument-panel">
+        <h2>Бас и дополнительные звуки</h2>
+        <div class="control-groups">
+          <fieldset class="control-group">
+            <legend>Ритм и основная тема</legend>
+            <div class="group-controls">
+              <label class="instrument-control color-bar"
+                ><output>72</output
+                ><input
+                  type="range"
+                  aria-label="Тяжёлый бит"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  style="background-size: 72% 100%"
+                  value="0.72" /></label
+              ><label class="instrument-control color-bar"
+                ><output>62</output
+                ><input
+                  type="range"
+                  aria-label="Войлочное электропиано"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  style="background-size: 62% 100%"
+                  value="0.62"
+              /></label>
+              <div class="instrument-control segment-control">
+                <output>30</output>
+                <div
+                  class="segment-scale"
+                  role="group"
+                  aria-label="Глубокий бас"
+                >
+                  <button
+                    type="button"
+                    aria-label="Глубокий бас 0"
+                    aria-pressed="false"
+                    class="lit"
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Глубокий бас 10"
+                    aria-pressed="false"
+                    class="lit"
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Глубокий бас 20"
+                    aria-pressed="false"
+                    class="lit"
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Глубокий бас 30"
+                    aria-pressed="true"
+                    class="lit"
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Глубокий бас 40"
+                    aria-pressed="false"
+                    class=""
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Глубокий бас 50"
+                    aria-pressed="false"
+                    class=""
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Глубокий бас 60"
+                    aria-pressed="false"
+                    class=""
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Глубокий бас 70"
+                    aria-pressed="false"
+                    class=""
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Глубокий бас 80"
+                    aria-pressed="false"
+                    class=""
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Глубокий бас 90"
+                    aria-pressed="false"
+                    class=""
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Глубокий бас 100"
+                    aria-pressed="false"
+                    class=""
+                  ></button>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <fieldset class="control-group">
+            <legend>Звон и глубина</legend>
+            <div class="group-controls">
+              <div class="instrument-control step-control">
+                <input
+                  type="number"
+                  aria-label="Большой колокол · набат"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value="32"
+                /><span class="step-buttons"
+                  ><button aria-label="Большой колокол · набат уменьшить">
+                    −</button
+                  ><button aria-label="Большой колокол · набат увеличить">
+                    +
+                  </button></span
+                >
+              </div>
+              <div class="instrument-control segment-control">
+                <output>42</output>
+                <div
+                  class="segment-scale"
+                  role="group"
+                  aria-label="Колокольчики"
+                >
+                  <button
+                    type="button"
+                    aria-label="Колокольчики 0"
+                    aria-pressed="false"
+                    class="lit"
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Колокольчики 10"
+                    aria-pressed="false"
+                    class="lit"
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Колокольчики 20"
+                    aria-pressed="false"
+                    class="lit"
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Колокольчики 30"
+                    aria-pressed="false"
+                    class="lit"
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Колокольчики 40"
+                    aria-pressed="true"
+                    class="lit"
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Колокольчики 50"
+                    aria-pressed="false"
+                    class=""
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Колокольчики 60"
+                    aria-pressed="false"
+                    class=""
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Колокольчики 70"
+                    aria-pressed="false"
+                    class=""
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Колокольчики 80"
+                    aria-pressed="false"
+                    class=""
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Колокольчики 90"
+                    aria-pressed="false"
+                    class=""
+                  ></button
+                  ><button
+                    type="button"
+                    aria-label="Колокольчики 100"
+                    aria-pressed="false"
+                    class=""
+                  ></button>
+                </div>
+              </div>
+              <div class="instrument-control step-control">
+                <input
+                  type="number"
+                  aria-label="Смычковое стекло"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value="40"
+                /><span class="step-buttons"
+                  ><button aria-label="Смычковое стекло уменьшить">−</button
+                  ><button aria-label="Смычковое стекло увеличить">
+                    +
+                  </button></span
+                >
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div
+          class="extra-sounds"
+          role="group"
+          aria-label="Дополнительные звуки"
+        >
+          <button
+            class="sound-pad sound-pad"
+            aria-label="Тёплый pad"
+            aria-pressed="true"
+          >
+            <span aria-hidden="true">☁</span><i></i></button
+          ><button
+            class="sound-pad sound-noise"
+            aria-label="Шумовой воздух"
+            aria-pressed="true"
+          >
+            <span aria-hidden="true">≋</span><i></i></button
+          ><button
+            class="sound-pad sound-glass"
+            aria-label="Стеклянные частицы"
+            aria-pressed="true"
+          >
+            <span aria-hidden="true">✧</span><i></i></button
+          ><button
+            class="sound-pad sound-pluck"
+            aria-label="Деревянный pluck"
+            aria-pressed="true"
+          >
+            <span aria-hidden="true">⌁</span><i></i></button
+          ><button
+            class="sound-pad sound-machine"
+            aria-label="Механические щелчки"
+            aria-pressed="true"
+          >
+            <span aria-hidden="true">⋮</span><i></i>
+          </button>
+        </div>
+        <button class="all-layers" aria-label="Включить все слои">⊕</button>
+      </section>
+    </main>
+    <p class="error" role="alert" hidden></p>
   </body>
 </html>
