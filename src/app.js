@@ -200,11 +200,11 @@ function knob(name, value, step, update) {
     update(v);
   };
   button.addEventListener("pointerdown", (e) => {
-    drag = { y: e.clientY, value: current };
+    drag = { x: e.clientX, y: e.clientY, value: current };
     button.setPointerCapture(e.pointerId);
   });
   button.addEventListener("pointermove", (e) => {
-    if (drag) set(drag.value + ((drag.y - e.clientY) / 120) * (max - min));
+    if (drag) set(drag.value + ((drag.y - e.clientY + e.clientX - drag.x) / (e.shiftKey ? 1200 : 300)) * (max - min));
   });
   for (const event of ["pointerup", "pointercancel", "lostpointercapture"])
     button.addEventListener(event, () => {
@@ -232,6 +232,19 @@ function knob(name, value, step, update) {
             (["ArrowUp", "ArrowRight"].includes(e.key) ? step : -step),
     );
   });
+  button.title = "Потяни вверх или вправо · колёсико · Shift для точной настройки";
+  button.addEventListener("wheel", e => {
+    e.preventDefault();
+    if(e.deltaY!==0) set(current + (e.deltaY<0?1:-1) * (e.shiftKey?step:step*5));
+  }, {passive:false});
+  const adjustments=document.createElement("div");
+  adjustments.className="knob-adjustments";
+  for(const [icon,sign,suffix]of [["−",-1,"уменьшить"],["+",1,"увеличить"]]) {
+    const control=document.createElement("button");control.type="button";control.textContent=icon;control.setAttribute("aria-label",name+" "+suffix);
+    control.addEventListener("click",e=>set(current+sign*step*(e.shiftKey?1:5)));
+    adjustments.append(control);
+  }
+  container.append(adjustments);
   sync(value);
 }
 for (const id of ["body", "ghost"]) {
