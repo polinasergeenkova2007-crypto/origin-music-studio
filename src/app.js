@@ -320,25 +320,3 @@ for (const [key, name] of extras)
     changeMelody(key, melody[key] > 0 ? 0 : melodyDefaults[key]);
     named(name).setAttribute("aria-pressed", melody[key] > 0);
   });
-document.querySelector(".all-layers").addEventListener("click", () => {
-  for (const key of [
-    "body",
-    "ghost",
-    "chime",
-    "bass",
-    "glass",
-    "noise",
-    "pad",
-    "pluck",
-    "machine",
-    "bow",
-    "piano",
-    "tower",
-    "beat",
-  ])
-    melody[key] = melodyDefaults[key];
-  engine.updateMelody({ ...melody });
-  for (const [key, sync] of Object.entries(syncLayers)) sync(melody[key]);
-  for (const [key, name] of extras)
-    named(name).setAttribute("aria-pressed", melody[key] > 0);
-});
