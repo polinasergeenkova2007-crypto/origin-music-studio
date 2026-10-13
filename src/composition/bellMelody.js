@@ -1,5 +1,3 @@
-// Original theme: a recurring turning figure, suspended answers, and a rising variation.
-// The theme is newly composed; it does not quote Glass, Satie, or IAMX.
 export const bellMelody = [
     [69, 74, 76, 77, 76, 74, 69],
     [69, 72, 74, 77, 76, 72, 69],
