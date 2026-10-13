@@ -54,3 +54,5 @@ body{display:flow-root}
 @media(max-width:430px){.extra-sounds{gap:0}.sound-pad{width:auto;height:56px}.sound-pad:before{width:36px;height:36px}.sound-pad i{left:50%}}
 .extra-sounds{max-width:360px;width:100%;margin:18px auto 0;padding:4px;border-radius:8px}.sound-pad{height:44px}.sound-pad:before{width:30px;height:30px}.sound-pad i{width:10px;height:10px}.sound-pad[aria-pressed=true] i{width:14px;height:14px}
 @media(max-width:430px){.sound-pad{height:40px}.sound-pad:before{width:27px;height:27px}}
+/* Rainbow rotary scales matching the slider tracks. */
+.knob-dial b{color:#b3bcc6}.envelope-knob .knob i{background:conic-gradient(#cde0aa,#edca9a,#e4a9bc,#bbb5d3,#a9cfdc,#cde0aa);box-shadow:0 0 0 2px #ecefe6,inset 0 1px 1px white}
