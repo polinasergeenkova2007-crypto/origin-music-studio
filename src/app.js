@@ -188,11 +188,11 @@ function knob(name, value, step, update) {
     button.style.transform = `rotate(${angle}deg)`;
     container.style.setProperty("--knob-angle", `${angle}deg`);
     output.textContent = v.toFixed(2);
-    container
-      .querySelectorAll("rect")
-      .forEach((r, i) =>
-        r.setAttribute("fill", i / 15 <= ratio ? "#ef9995" : "#edbab5"),
-      );
+    container.querySelectorAll("rect").forEach((r, i) => {
+      const colors = ["#a9cfdc", "#bbb5d3", "#e4a9bc", "#edca9a", "#cde0aa"];
+      r.setAttribute("fill", colors[Math.min(4, Math.floor((i / 16) * 5))]);
+      r.setAttribute("opacity", i / 15 <= ratio ? "1" : "0.65");
+    });
   };
   const set = (v) => {
     v = clamp(Number((Math.round(v / step) * step).toFixed(3)), min, max);
